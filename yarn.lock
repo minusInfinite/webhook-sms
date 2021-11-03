@@ -14913,15 +14913,12 @@ __metadata:
     apollo-server-express: ^3.4.0
     bcrypt: ^5.0.1
     dotenv: ^10.0.0
-    eslint: ^8.1.0
     express: ^4.17.1
     graphql: 15.3
     jsonwebtoken: ^8.5.1
     mongojs: ^3.1.0
     mongoose: ^6.0.12
     nodemon: ^2.0.14
-    prettier: ^2.4.1
-    typescript: ^4.4.4
   languageName: unknown
   linkType: soft
 
@@ -16755,6 +16752,10 @@ __metadata:
 "webhook-sms@workspace:.":
   version: 0.0.0-use.local
   resolution: "webhook-sms@workspace:."
+  dependencies:
+    eslint: ^8.1.0
+    prettier: ^2.4.1
+    typescript: ^4.4.4
   languageName: unknown
   linkType: soft
 
