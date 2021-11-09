@@ -7,6 +7,7 @@ import express from "express"
 import path from "path"
 import db from "./config/connection.js"
 import {typeDefs,resolvers} from "./schemas/index.js"
+import {authMiddleware} from "./utils/auth.js"
 
 async function startServer(typeDefs,resolvers) {
     const app = express()
@@ -14,6 +15,9 @@ async function startServer(typeDefs,resolvers) {
     const gqlServer = new ApolloServer({
         typeDefs,
         resolvers,
+        context: ({req,res}) => {
+            return authMiddleware({req: req})
+        },
         plugins: [
             ApolloServerPluginLandingPageGraphQLPlayground()
         ],
