@@ -3731,6 +3731,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"apollo-server-errors@npm:^3.3.0":
+  version: 3.3.0
+  resolution: "apollo-server-errors@npm:3.3.0"
+  peerDependencies:
+    graphql: ^15.3.0 || ^16.0.0
+  checksum: 017d996bee3ffbc7da9d4db7993da1fc83a653dc43174fa04bf1b3b8c9e08a5fc2daf46ad7d8c715d0924c334af4e45f3718d8cea662084bd122e94c9f324ef0
+  languageName: node
+  linkType: hard
+
 "apollo-server-express@npm:^3.4.0":
   version: 3.4.0
   resolution: "apollo-server-express@npm:3.4.0"
@@ -14910,6 +14919,7 @@ __metadata:
   resolution: "server@workspace:server"
   dependencies:
     apollo-server-core: ^3.4.0
+    apollo-server-errors: ^3.3.0
     apollo-server-express: ^3.4.0
     bcrypt: ^5.0.1
     dotenv: ^10.0.0
