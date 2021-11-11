@@ -1,0 +1,97 @@
+:root {
+    --bgcolor: #fcfcfc;
+    --headerbg: #2c2c2c;
+}
+
+html,
+body {
+    min-width: 100vw;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* Header and Navigation */
+
+header {
+    width: 100vw;
+    background-color: var(--headerbg);
+    margin: 0 0 1em 0;
+    color: #fcfcfc;
+}
+
+header nav ul{
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    list-style: none;
+}
+
+header nav ul li{
+    padding: 0.5rem 0;
+    text-align: center;
+}
+
+header nav ul a{
+    text-decoration: underline solid #0359c9 2px;
+    color: inherit;
+}
+
+header nav ul a:hover,header nav ul a:focus {
+    color: #5fa4ff;
+}
+
+/* Main Content */
+
+/* Forms */
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+/* footer */
+footer {
+    position: fixed;
+    bottom: 0rem;
+    width: 100%;
+    margin-top: 0.8rem;
+    text-align: center;
+}
+
+footer h2 {
+    font-size: medium;
+}
+
+@media screen and (min-width: 32rem) {
+    main {
+        width: 50%;
+        margin: 0 auto;
+    }
+
+    header nav{
+        padding: 1.5em;
+    }
+
+    header nav ul{
+        display: flex;
+        justify-content: flex-end;
+        width: 100vw;
+        padding: 0 0.5rem;
+        list-style: none;
+    }
+
+    header nav ul li:first-child {
+        flex: 1 0 auto;
+        width: 70%;
+        justify-self: flex-start;
+    }
+    
+    header nav ul li{
+        display: inline;
+        padding: 0.5rem 0.15rem;
+        width: 5em;
+        text-align: inherit;
+    }
+
+
+}

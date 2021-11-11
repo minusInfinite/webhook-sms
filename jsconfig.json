@@ -1,0 +1,16 @@
+{
+    "compilerOptions": {
+        "allowJs": true,
+        "lib": ["es6","dom"],
+        "noImplicitAny": true,
+        "noImplicitThis": true,
+        "strictNullChecks": true,
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
+        "noEmit": true
+    },
+    "typeAcquisition": {
+        "include": ["node","react","@mui"]
+    },
+    "exclude": [".yarn","build","**/.yarn"]
+}
