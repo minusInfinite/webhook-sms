@@ -8,6 +8,7 @@ import path from "path"
 import db from "./config/connection.js"
 import {typeDefs,resolvers} from "./schemas/index.js"
 import {authMiddleware} from "./utils/auth.js"
+import webhookRouter from "./controllers/hook.js"
 
 async function startServer(typeDefs,resolvers) {
     const app = express()
@@ -27,6 +28,7 @@ async function startServer(typeDefs,resolvers) {
 
     app.use(express.urlencoded({extended: true}))
     app.use(express.json())
+    app.use("/hook", webhookRouter)
 
     gqlServer.applyMiddleware({app})
 
