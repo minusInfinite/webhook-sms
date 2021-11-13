@@ -44,6 +44,19 @@ export const ADD_USER = gql`
   }
 `;
 
+export const SET_MSG_TEMPLATE = gql`
+  mutation addMsgTemplate($template:String!){
+  addMsgTemplate(template:$template){
+    _id
+    username
+    email
+    serviceCount
+    key
+    msgTemplate
+  }
+}
+`;
+
 export const SAVE_SERVICE = gql`
   mutation saveService($service: ServiceInput!) {
     saveBook(service: $service) {

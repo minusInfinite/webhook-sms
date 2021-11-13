@@ -1,5 +1,5 @@
 import React from "react";
-import {} from "@mui/material/";
+import {CssBaseline} from "@mui/material";
 import {
   ApolloClient,
   ApolloProvider,
@@ -32,6 +32,7 @@ function App() {
   return (
     <>
       <ApolloProvider client={client}>
+      <CssBaseline />
         <MainContainer />
       </ApolloProvider>
     </>

@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+        "allowJs": true,
+        "jsx": "preserve",
+        "lib": ["es6","dom"],
+        "moduleResolution": "Node",
+        "noImplicitThis": true,
+        "strictNullChecks": true,
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
+        "noEmit": true
+    },
+    "typeAcquisition": {
+        "include": ["node","react"]
+    },
+    "exclude": [".yarn","build","**/.yarn"]
+}
