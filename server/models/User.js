@@ -1,5 +1,6 @@
 import mongoose from 'mongoose' 
 import bcrypt from 'bcrypt'
+import {v4 as uuid4} from "uuid"
 
 import serviceSchema from './Service.js'
 
@@ -22,7 +23,15 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
-    serviceList: [serviceSchema],
+    key: {
+      type: String,
+      default: uuid4()
+    },
+    msgTemplate: {
+      type: String,
+      default:"This is a Test Message"
+    },
+    serviceList: [serviceSchema]
   },
   {
     toJSON: {
@@ -32,9 +41,10 @@ const userSchema = new Schema(
 );
 
 userSchema.pre('save', async function (next) {
-  if (this.isNew || this.isModified('password')) {
+  if (this.isNew || this.isModified('password') || this.isModified('key')) {
     const saltRounds = 10;
     this.password = await bcrypt.hash(this.password, saltRounds);
+    this.key = uuid4()
   }
 
   next();

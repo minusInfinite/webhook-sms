@@ -22,4 +22,5 @@ const serviceSchema = new Schema({
     }
   });
   
+  
   export default serviceSchema;

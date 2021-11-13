@@ -9,6 +9,8 @@ export const LOGIN_USER = gql`
         username
         email
         serviceCount
+        key
+        msgTemplate
         serviceList {
           serviceNumber
           lastMessage
@@ -29,6 +31,8 @@ export const ADD_USER = gql`
         username
         email
         serviceCount
+        key
+        msgTemplate
         serviceList {
           serviceNumber
           lastMessage
@@ -47,6 +51,8 @@ export const SAVE_SERVICE = gql`
       username
       email
       serviceCount
+      key
+      msgTemplate
       serviceList {
         serviceNumber
         lastMessage
@@ -64,6 +70,8 @@ export const REMOVE_SERVICE = gql`
       username
       email
       serviceCount
+      key
+      msgTemplate
       serviceList {
         serviceNumber
         lastMessage
