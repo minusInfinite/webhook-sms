@@ -35,16 +35,17 @@ const resolvers = {
 
       return { token, user };
     },
-    addMsgTemplate: async (parent, { templateString }, context) => {
+    addMsgTemplate: async (parent, { template }, context) => {
       if (context.user) {
         return User.findOneAndUpdate(
           { _id: context.user._id },
           {
-            $set: { msgTemplate: templateString },
+            $set: { msgTemplate: template },
           },
           { new: true }
         );
       }
+      throw new AuthenticationError("You need to be logged in");
     },
     saveService: async (parent, { ...ServiceInput }, context) => {
       const service = ServiceInput.service;
