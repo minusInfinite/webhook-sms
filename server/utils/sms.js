@@ -68,8 +68,6 @@ async function updateDB(document, data) {
     return mObj;
   });
 
-  console.log
-
   for (let i = 0; i < messages.length; i++) {
     if (document.serviceList[i].serviceNumber === messages[i].serviceNumber) {
       document.serviceList[i].lastMessage = messages[i].lastMessage;
@@ -79,10 +77,9 @@ async function updateDB(document, data) {
     }
   }
   try {
-    const saveDoc = await document.save()
-    console.log(saveDoc)
+    await document.save();
   } catch (err) {
-      console.log(err)
+    console.log(err);
   }
 }
 
