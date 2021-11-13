@@ -1,5 +1,5 @@
 import React, {useState} from "react"
-import {AppBar, Toolbar,Typography} from "@mui/material"
+import {AppBar, Toolbar,Typography, Box} from "@mui/material"
 import Login from "../content/Login";
 import Signup from "../content/Signup";
 import Navbar from "./Navbar";
@@ -36,9 +36,9 @@ function MainContainer() {
         </Toolbar>
       </AppBar>
       {displayContent()}
-      <footer>
-        <h2>main by minusinfinite&copy;</h2>
-      </footer>
+      <Box component="footer" sx={{position: "fixed",bottom:"0rem", width:"100%",textAlign:"center", mt:"0.8rem"}}>
+        <Typography variant="h5" gutterBottom component="h2">main by minusinfinite&copy;</Typography>
+      </Box>
     </>
   );
 }

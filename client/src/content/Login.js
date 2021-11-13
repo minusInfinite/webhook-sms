@@ -49,9 +49,9 @@ const Login = () => {
     }
     return (
         <>
-            <Container maxWidth="sm">
+            <Container maxWidth="sm" sx={{mt:"1rem"}}>
             <Typography component="h1" variant="h5" align="center">Login</Typography>
-            <Box component="form" onSubmit={handleFormSubmit} noValidate validated={validated}>
+            <Box component="form" onSubmit={handleFormSubmit} noValidate validated={validated} sx={{display: "flex", flexDirection: "column", mt:1}}>
                 <Collapse in={showAlert}>
                     <Alert severity="error" onClose={() => setShowAlert(false)} >Something went wrong with your login!</Alert>
                 </Collapse>

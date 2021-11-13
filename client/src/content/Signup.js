@@ -52,9 +52,9 @@ const Signup = () => {
     }
     return (
         <>
-            <Container maxWidth="sm">
+            <Container maxWidth="sm" sx={{mt:"1rem"}}>
             <Typography component="h1" variant="h5" align="center">Sign In</Typography>
-            <Box component="form" onSubmit={handleFormSubmit} noValidate validated={validated} sx={{mt: 1}}>
+            <Box component="form" onSubmit={handleFormSubmit} noValidate validated={validated} sx={{display: "flex", flexDirection: "column", mt:1}}>
                 <Collapse in={showAlert}>
                     <Alert severity="error" onClose={() => setShowAlert(false)} >Something went wrong with your signup!</Alert>
                 </Collapse>
