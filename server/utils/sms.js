@@ -1,5 +1,6 @@
 import axios from "axios";
 import User from "../models/User.js";
+import { DateTime } from "luxon";
 
 const baseURL = "https://rest.clicksend.com/v3";
 const smsAuth = Buffer.from(
@@ -11,7 +12,6 @@ axios.defaults.headers.common["Authorization"] = `Basic ${smsAuth}`;
 
 async function validate(key) {
   try {
-    console.log(key);
     const user = await User.findOne({ key: key });
     if (user) {
       sendSMS(user);
@@ -23,7 +23,11 @@ async function validate(key) {
   }
 }
 
-function sendSMS(user) {
+/**
+ *
+ * @param {User} user
+ */
+async function sendSMS(user) {
   const from = user.username;
   const body = user.msgTemplate;
   const send = user.serviceList.map((obj) => {
@@ -37,20 +41,49 @@ function sendSMS(user) {
   const data = JSON.stringify({
     messages: send,
   });
+  try {
+    const sms = await axios({
+      method: "post",
+      url: `${baseURL}/sms/send`,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: data,
+    });
 
-  axios({
-    method: "post",
-    url: `${baseURL}/sms/send`,
-    headers: {
-      "Content-Type": "application/json",
-    },
-    data: data,
-  })
-    .then((res) => {
-      console.log(JSON.stringify(res.data));
-      
-    })
-    .catch((err) => console.log(err));
+    const result = sms.data.data;
+    updateDB(user, result);
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+async function updateDB(document, data) {
+  const messages = data.messages.map((obj) => {
+    let mObj = {};
+    mObj.serviceNumber = obj.to;
+    mObj.lastMessage = DateTime.fromSeconds(obj.date).toSQL();
+    mObj.lastStatus = obj.status;
+    mObj.cost = parseFloat(obj.message_price);
+    return mObj;
+  });
+
+  console.log
+
+  for (let i = 0; i < messages.length; i++) {
+    if (document.serviceList[i].serviceNumber === messages[i].serviceNumber) {
+      document.serviceList[i].lastMessage = messages[i].lastMessage;
+      document.serviceList[i].lastStatus = messages[i].lastStatus;
+      document.serviceList[i].messageCount += 1;
+      document.serviceList[i].usageCost += messages[i].cost;
+    }
+  }
+  try {
+    const saveDoc = await document.save()
+    console.log(saveDoc)
+  } catch (err) {
+      console.log(err)
+  }
 }
 
 export { validate };

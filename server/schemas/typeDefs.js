@@ -4,7 +4,7 @@ const typeDefs = gql`
     type Service {
         serviceNumber: String!
         lastMessage: String
-        lastStatus: Boolean
+        lastStatus: String
         messageCount: Int
         usageCost: Float
     }
@@ -27,7 +27,7 @@ const typeDefs = gql`
     input ServiceInput {
         serviceNumber: String!
         lastMessage: String
-        lastStatus: Boolean
+        lastStatus: String
         messageCount: Int
         usageCost: Float
     }

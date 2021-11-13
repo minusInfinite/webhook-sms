@@ -1,6 +1,6 @@
-import mongoose from 'mongoose' 
+import mongoose from 'mongoose'
 
-const { Schema} = mongoose
+const { Schema } = mongoose
 
 const serviceSchema = new Schema({
     serviceNumber: {
@@ -9,16 +9,20 @@ const serviceSchema = new Schema({
       unique: true
     },
     lastMessage: {
-        type: String
+        type: String,
+        default: ""
     },
     lastStatus: {
-        type: Boolean
+        type: String,
+        default: ""
     },
     messageCount: {
-        type: Number
+        type: Number,
+        default: 0
     },
     usageCost: {
-        type: Number
+        type: Number,
+        default: 0.000
     }
   });
   
