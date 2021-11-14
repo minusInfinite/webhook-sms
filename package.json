@@ -1,6 +1,9 @@
 {
   "name": "webhook-sms",
   "packageManager": "yarn@3.1.0",
+  "engines": {
+    "node": "14.x"
+  },
   "private": true,
   "workspaces": [
     "client",
