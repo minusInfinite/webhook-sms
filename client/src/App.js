@@ -1,5 +1,6 @@
 import React from "react";
-import {CssBaseline} from "@mui/material";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { CssBaseline } from "@mui/material";
 import {
   ApolloClient,
   ApolloProvider,
@@ -7,7 +8,13 @@ import {
   InMemoryCache,
 } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
+import { Routes, Route } from "react-router-dom";
 import MainContainer from "./components/MainContainer";
+import Dashboard from "./content/Dashboard";
+import Login from "./content/Login";
+import Signup from "./content/Signup";
+import NoRoute from "./content/NoRoute";
+import Home from "./content/Home";
 
 const httpLink = createHttpLink({
   uri: "/graphql",
@@ -28,12 +35,24 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
+const appTeme = createTheme();
+
 function App() {
   return (
     <>
       <ApolloProvider client={client}>
-      <CssBaseline />
-        <MainContainer />
+        <ThemeProvider theme={appTeme}>
+          <CssBaseline />
+          <Routes>
+            <Route path="/" element={<MainContainer />}>
+              <Route index element={<Home />} />
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<Signup />} />
+              <Route path="*" element={<NoRoute />} />
+            </Route>
+          </Routes>
+        </ThemeProvider>
       </ApolloProvider>
     </>
   );

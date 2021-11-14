@@ -1,9 +1,14 @@
 {
     "compilerOptions": {
+        "baseUrl": "./",
         "allowJs": true,
-        "jsx": "preserve",
-        "lib": ["es6","dom"],
-        "moduleResolution": "Node",
+        "checkJs": false,
+        "jsx": "react",
+        "lib": ["es2020","DOM", "DOM.Iterable"],
+        "skipLibCheck": true,
+        "module": "ES2020",
+        "moduleResolution": "node",
+        "preserveSymlinks": true,
         "noImplicitThis": true,
         "strictNullChecks": true,
         "esModuleInterop": true,
@@ -11,6 +16,7 @@
         "noEmit": true
     },
     "typeAcquisition": {
+        "enable": false,
         "include": ["node","react"]
     },
     "exclude": [".yarn","build","**/.yarn"]

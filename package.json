@@ -8,7 +8,10 @@
   ],
   "scripts": {
     "client": "yarn workspace client",
-    "server": "yarn workspace server"
+    "server": "yarn workspace server",
+    "build": "yarn client build",
+    "start": "yarn server start",
+    "dev": "yarn server dev && yarn client start"
   },
   "devDependencies": {
     "eslint": "^8.1.0",
