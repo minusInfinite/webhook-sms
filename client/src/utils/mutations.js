@@ -60,14 +60,14 @@ export const SET_MSG_TEMPLATE = gql`
 `;
 
 export const SAVE_SERVICE = gql`
-  mutation saveService($service: ServiceInput!) {
-    saveBook(service: $service) {
+  mutation saveService($serviceNumber: String!) {
+    saveService(serviceNumber: $serviceNumber) {
       _id
-      username
       email
-      serviceCount
+      username
       key
       msgTemplate
+      serviceCount
       serviceList {
         serviceNumber
         lastMessage

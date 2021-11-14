@@ -47,15 +47,17 @@ const resolvers = {
       }
       throw new AuthenticationError("You need to be logged in");
     },
-    saveService: async (parent, { ...ServiceInput }, context) => {
-      const service = ServiceInput.service;
+    saveService: async (parent, { serviceNumber }, context) => {
+      const service = serviceNumber;
       if (context.user) {
         const user = await User.findOne({ _id: context.user._id });
-        const serviceFound = user.serviceList.find(({serviceNumber}) => serviceNumber === service.serviceNumber)
+        const serviceFound = user.serviceList.find(
+          ({ serviceNumber }) => serviceNumber === service
+        );
         if (!user.serviceList || !serviceFound) {
           return User.findOneAndUpdate(
             { _id: context.user._id },
-            { $addToSet: { serviceList: { ...service } } },
+            { $addToSet: { serviceList: { serviceNumber: service } } },
             { new: true, runValidators: true }
           );
         }

@@ -1,7 +1,8 @@
+import React, { useState } from "react";
 import { Navigate } from "react-router-dom";
 import { useMutation, useQuery } from "@apollo/client";
 import auth from "src/utils/auth";
-import { REMOVE_SERVICE } from "src/utils/mutations";
+import { REMOVE_SERVICE, SAVE_SERVICE } from "src/utils/mutations";
 import { GET_ME } from "src/utils/queries";
 import {
   CircularProgress,
@@ -12,15 +13,34 @@ import {
   Typography,
   CardContent,
   Button,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+  TextField,
+  Link,
+  Collapse,
+  Alert,
 } from "@mui/material";
 import ClearIcon from "@mui/icons-material/Clear";
 
 const Dashboard = () => {
+  const [serviceFormData, setServiceFormData] = useState({
+    serviceNumber: "",
+  });
+  const [validated] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
   const { loading, data } = useQuery(GET_ME);
+  const [saveService, { errors, saving, newService }] =
+    useMutation(SAVE_SERVICE);
   const [removeService, { error, fetching, service }] =
     useMutation(REMOVE_SERVICE);
 
   let user = data?.me || {};
+
+  const uri = window.location.host.toString();
 
   if (!auth.loggedIn()) {
     return <Navigate to="/" replace={true} />;
@@ -35,20 +55,53 @@ const Dashboard = () => {
 
     try {
       const { data } = await removeService({ variables: { serviceNumber } });
-      console.info(error, service);
       user = data;
     } catch (err) {
       console.error(err);
     }
   };
 
-  if (loading || fetching) {
+  if (loading || fetching || saving) {
     return (
       <Box sx={{ display: "flex" }}>
         <CircularProgress />
       </Box>
     );
   }
+
+  const dialogClose = () => {
+    setDialogOpen(false);
+  };
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setServiceFormData({ ...serviceFormData, [name]: value });
+  };
+
+  const handleFormSubmit = async (event) => {
+    event.preventDefault();
+
+    // check if form has everything (as per react-bootstrap docs)
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+
+    try {
+      const { data } = await saveService({
+        variables: { ...serviceFormData },
+      });
+      user = data;
+    } catch (err) {
+      console.error(err);
+      setShowAlert(true);
+    }
+
+    setServiceFormData({
+      serviceNumber: "",
+    });
+  };
 
   return (
     <>
@@ -57,7 +110,7 @@ const Dashboard = () => {
         component="h2"
         sx={{ flexGrow: 1, width: "100%", textAlign: "center", mt: "1rem" }}
       >
-        /hook/{user.key}
+        {uri}/hook/{user.key}
       </Typography>
       <Container
         sx={{ width: "80%", alignSelf: "center", textAlign: "center" }}
@@ -81,7 +134,7 @@ const Dashboard = () => {
                 key={service.serviceNumber}
                 sx={{ m: "2rem", position: "relative" }}
               >
-                <CardContent sx={{ mr: "1rem" }}>
+                <CardContent sx={{ mr: "2rem" }}>
                   <Typography gutterBottom>
                     <strong>Service Number:</strong> {service.serviceNumber}
                   </Typography>
@@ -107,8 +160,8 @@ const Dashboard = () => {
                   onClick={() => handleDeleteService(service.serviceNumber)}
                   sx={{
                     position: "absolute",
-                    right: "0.5rem",
-                    top: "0.5rem",
+                    right: "0.1rem",
+                    top: "0.1rem",
                   }}
                 >
                   <ClearIcon />
@@ -116,9 +169,57 @@ const Dashboard = () => {
               </Card>
             );
           })}
-          <Button></Button>
         </Box>
+        <Button variant="contained" onClick={() => setDialogOpen(true)}>
+          New Service
+        </Button>
       </Container>
+      <Dialog open={dialogOpen} onClose={dialogClose}>
+        <DialogTitle>Add Service Number</DialogTitle>
+        <Box component="form" onSubmit={handleFormSubmit} noValidate>
+          <DialogContent>
+            <DialogContentText>
+              Add a service number, be sure to confirm the{" "}
+              <Link
+                href="https://countrycode.org/"
+                targer="_blank"
+                rel="noreferrer"
+              >
+                county code
+              </Link>
+            </DialogContentText>
+
+            <Collapse in={showAlert}>
+              <Alert severity="error" onClose={() => setShowAlert(false)}>
+                Something went wrong when adding your service!
+              </Alert>
+            </Collapse>
+            <TextField
+              autoFocus
+              error={validated}
+              margin="dense"
+              id="serviceNumber"
+              label="Service Number"
+              type="text"
+              name="serviceNumber"
+              fullWidth
+              variant="standard"
+              maxLength="12"
+              onChange={handleInputChange}
+              value={serviceFormData.serviceNumber}
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button
+              type="submit"
+              variant="contained"
+              disabled={!serviceFormData.serviceNumber}
+            >
+              Add Service
+            </Button>
+          </DialogActions>
+        </Box>
+      </Dialog>
     </>
   );
 };
