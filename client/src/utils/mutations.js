@@ -14,6 +14,7 @@ export const LOGIN_USER = gql`
         serviceList {
           serviceNumber
           lastMessage
+          lastStatus
           messageCount
           usageCost
         }
@@ -36,6 +37,7 @@ export const ADD_USER = gql`
         serviceList {
           serviceNumber
           lastMessage
+          lastStatus
           messageCount
           usageCost
         }
@@ -45,16 +47,16 @@ export const ADD_USER = gql`
 `;
 
 export const SET_MSG_TEMPLATE = gql`
-  mutation addMsgTemplate($template:String!){
-  addMsgTemplate(template:$template){
-    _id
-    username
-    email
-    serviceCount
-    key
-    msgTemplate
+  mutation addMsgTemplate($template: String!) {
+    addMsgTemplate(template: $template) {
+      _id
+      username
+      email
+      serviceCount
+      key
+      msgTemplate
+    }
   }
-}
 `;
 
 export const SAVE_SERVICE = gql`
@@ -69,6 +71,7 @@ export const SAVE_SERVICE = gql`
       serviceList {
         serviceNumber
         lastMessage
+        lastStatus
         messageCount
         usageCost
       }
@@ -77,8 +80,8 @@ export const SAVE_SERVICE = gql`
 `;
 
 export const REMOVE_SERVICE = gql`
-  mutation removeService($serviceNumber: ID!) {
-    removeBook(serviceNumber: $serviceNumber) {
+  mutation removeService($serviceNumber: String!) {
+    removeService(serviceNumber: $serviceNumber) {
       _id
       username
       email
@@ -88,6 +91,7 @@ export const REMOVE_SERVICE = gql`
       serviceList {
         serviceNumber
         lastMessage
+        lastStatus
         messageCount
         usageCost
       }

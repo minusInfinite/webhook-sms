@@ -12,6 +12,7 @@ export const GET_ME = gql`
       serviceList {
         serviceNumber
         lastMessage
+        lastStatus
         messageCount
         usageCost
       }
