@@ -100,6 +100,7 @@ const Dashboard = () => {
     setServiceFormData({
       serviceNumber: "",
     });
+    dialogClose();
   };
 
   return (
