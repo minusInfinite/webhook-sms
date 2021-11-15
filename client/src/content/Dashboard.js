@@ -39,7 +39,7 @@ const Dashboard = () => {
 
   let user = data?.me || {};
 
-  const uri = window.location.host.toString();
+  const uri = window.location.origin.toString();
 
   if (!auth.loggedIn()) {
     return <Navigate to="/" replace={true} />;
