@@ -9,7 +9,6 @@ const user = process.env.CLICK_SEND_USER;
 const key = process.env.CLICK_SEND_KEY;
 const buff = Buffer.from(`${user}:${key}`, "utf-8");
 const smsAuth = buff.toString("base64");
-console.info(smsAuth);
 
 async function validate(key) {
   try {
