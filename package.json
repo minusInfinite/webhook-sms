@@ -1,23 +1,12 @@
 {
   "name": "webhook-sms",
-  "packageManager": "yarn@3.1.0",
   "engines": {
     "node": "14.x"
   },
   "private": true,
-  "workspaces": [
-    "client",
-    "server"
-  ],
   "scripts": {
-    "client": "yarn workspace client",
-    "server": "yarn workspace server",
-    "build": "yarn client build",
-    "start": "yarn server start"
-  },
-  "devDependencies": {
-    "eslint": "^8.1.0",
-    "prettier": "^2.4.1",
-    "typescript": "^4.4.4"
+    "install": "cd server && npm i && cd ../client && npm i",
+    "start": "node server/server.js",
+    "build": "cd client && npm run build"
   }
 }

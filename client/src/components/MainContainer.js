@@ -6,7 +6,7 @@ import Navbar from "./Navbar";
 function MainContainer() {
   return (
     <>
-      <AppBar position="static" sx={{ backgroundColor: "#212121" }}>
+      <AppBar position="sticky" sx={{ top: "0", backgroundColor: "#212121" }}>
         <Toolbar>
           <Navbar />
         </Toolbar>
@@ -17,9 +17,9 @@ function MainContainer() {
           backgroundColor: (theme) => theme.palette.grey[300],
           display: "flex",
           flexWrap: "wrap",
-          alignContent: "flex-start",
+          justifyContent: "center",
           maxHeight: "100vh",
-          overflow: "hidden",
+          pb: "20%",
         }}
       >
         <Outlet />
@@ -27,9 +27,11 @@ function MainContainer() {
       <Box
         component="footer"
         sx={{
+          backgroundColor: "#fff",
           position: "fixed",
           bottom: "0rem",
           width: "100%",
+          maxHeight: "20%",
           textAlign: "center",
           mt: "0.8rem",
         }}
