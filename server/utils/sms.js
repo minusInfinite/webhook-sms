@@ -1,14 +1,15 @@
+import dotenv from "dotenv";
+dotenv.config();
 import axios from "axios";
 import User from "../models/User.js";
 import { DateTime } from "luxon";
 
 const baseURL = "https://rest.clicksend.com/v3";
-const smsAuth = Buffer.from(
-  `${process.env.CLICK_SEND_USER}:${process.env.CLICK_SEND_KEY}`,
-  "utf-8"
-).toString("base64");
-
-axios.defaults.headers.common["Authorization"] = `Basic ${smsAuth}`;
+const user = process.env.CLICK_SEND_USER;
+const key = process.env.CLICK_SEND_KEY;
+const buff = Buffer.from(`${user}:${key}`, "utf-8");
+const smsAuth = buff.toString("base64");
+console.info(smsAuth);
 
 async function validate(key) {
   try {
@@ -47,6 +48,7 @@ async function sendSMS(user) {
       url: `${baseURL}/sms/send`,
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Basic ${smsAuth}`,
       },
       data: data,
     });
