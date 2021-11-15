@@ -1,7 +1,6 @@
 import dotenv from "dotenv";
-import { fileURLToPath } from "url";
 dotenv.config();
-import { ApolloServerPluginLandingPageGraphQLPlayground } from "apollo-server-core";
+import { fileURLToPath } from "url";
 import { ApolloServer } from "apollo-server-express";
 import express from "express";
 import path, { dirname } from "path";
@@ -21,7 +20,6 @@ async function startServer(typeDefs, resolvers) {
     context: ({ req, res }) => {
       return authMiddleware({ req: req });
     },
-    plugins: [ApolloServerPluginLandingPageGraphQLPlayground()],
   });
 
   await gqlServer.start();
@@ -49,10 +47,7 @@ async function startServer(typeDefs, resolvers) {
 
   db.once("open", () => {
     app.listen(PORT, () => {
-      console.log(`Server is running on http://localhost:${PORT}`);
-      console.log(
-        `Debug GraphQL at http://localhost:${PORT}${gqlServer.graphqlPath}`
-      );
+      console.info(`Server is running on http://localhost:${PORT}`);
     });
   });
 }

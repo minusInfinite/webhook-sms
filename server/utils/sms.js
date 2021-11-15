@@ -1,5 +1,3 @@
-import dotenv from "dotenv";
-dotenv.config();
 import axios from "axios";
 import User from "../models/User.js";
 import { DateTime } from "luxon";
@@ -19,7 +17,7 @@ async function validate(key) {
     }
     throw new Error("no user found");
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 }
 
@@ -55,7 +53,7 @@ async function sendSMS(user) {
     const result = sms.data.data;
     updateDB(user, result);
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 }
 
@@ -80,7 +78,7 @@ async function updateDB(document, data) {
   try {
     await document.save();
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 }
 
