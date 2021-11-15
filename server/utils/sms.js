@@ -3,12 +3,10 @@ import User from "../models/User.js";
 import { DateTime } from "luxon";
 
 const baseURL = "https://rest.clicksend.com/v3";
-const smsAuth = Buffer.from(
-  `${process.env.CLICK_SEND_USER}:${process.env.CLICK_SEND_KEY}`,
-  "utf-8"
-).toString("base64");
-
-axios.defaults.headers.common["Authorization"] = `Basic ${smsAuth}`;
+const user = process.env.CLICK_SEND_USER;
+const key = process.env.CLICK_SEND_KEY;
+const buff = Buffer.from(`${user}:${key}`, "utf-8");
+const smsAuth = buff.toString("base64");
 
 async function validate(key) {
   try {
@@ -19,7 +17,7 @@ async function validate(key) {
     }
     throw new Error("no user found");
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 }
 
@@ -47,6 +45,7 @@ async function sendSMS(user) {
       url: `${baseURL}/sms/send`,
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Basic ${smsAuth}`,
       },
       data: data,
     });
@@ -54,7 +53,7 @@ async function sendSMS(user) {
     const result = sms.data.data;
     updateDB(user, result);
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 }
 
@@ -79,7 +78,7 @@ async function updateDB(document, data) {
   try {
     await document.save();
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 }
 

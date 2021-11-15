@@ -16,7 +16,6 @@
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
-    "eslint-config-react-app": "^6.0.0",
     "graphql": "15.3.0",
     "history": "5",
     "jwt-decode": "^3.1.2",
@@ -54,8 +53,6 @@
     "@types/babel__core": "^7.1.16",
     "@types/history": "^4.7.9",
     "@types/react": "^17.0.34",
-    "@types/react-dom": "^17.0.11",
-    "typescript": "^4.4.4",
-    "webpack": "^5.64.0"
+    "@types/react-dom": "^17.0.11"
   }
 }

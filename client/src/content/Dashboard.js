@@ -7,7 +7,6 @@ import { GET_ME } from "src/utils/queries";
 import {
   CircularProgress,
   Box,
-  Container,
   Card,
   IconButton,
   Typography,
@@ -40,7 +39,7 @@ const Dashboard = () => {
 
   let user = data?.me || {};
 
-  const uri = window.location.host.toString();
+  const uri = window.location.origin.toString();
 
   if (!auth.loggedIn()) {
     return <Navigate to="/" replace={true} />;
@@ -101,6 +100,7 @@ const Dashboard = () => {
     setServiceFormData({
       serviceNumber: "",
     });
+    dialogClose();
   };
 
   return (
@@ -112,29 +112,55 @@ const Dashboard = () => {
       >
         {uri}/hook/{user.key}
       </Typography>
-      <Container
-        sx={{ width: "80%", alignSelf: "center", textAlign: "center" }}
+      <Box
+        sx={{
+          alignSelf: "center",
+          textAlign: "center",
+        }}
       >
-        <Typography component="span" sx={{ mx: "0.8rem" }}>
-          <strong>Username: </strong>
-          {user.username}
-        </Typography>
-        <Typography component="span" sx={{ mx: "0.8rem" }}>
-          <strong>Service Count: </strong>
-          {user.serviceCount}
-        </Typography>
-        <Typography component="span" sx={{ mx: "0.8rem" }}>
-          <strong>Message Template: </strong>
-          {user.msgTemplate}
-        </Typography>
-        <Box sx={{ display: "flex", flexWrap: "wrap", textAlign: "left" }}>
+        <Box sx={{ mb: "1rem" }}>
+          <Typography component="span" sx={{ mx: "0.8rem" }}>
+            <strong>Username: </strong>
+            {user.username}
+          </Typography>
+          <Typography component="span" sx={{ mx: "0.8rem" }}>
+            <strong>Service Count: </strong>
+            {user.serviceCount}
+          </Typography>
+          <Typography component="span" sx={{ mx: "0.8rem" }}>
+            <strong>Message Template: </strong>
+            {user.msgTemplate}
+          </Typography>
+        </Box>
+        <Button
+          sx={{ mb: "1rem" }}
+          variant="contained"
+          onClick={() => setDialogOpen(true)}
+        >
+          New Service
+        </Button>
+        <Box
+          sx={{
+            justifySelf: "center",
+            display: "flex",
+            flexWrap: "wrap",
+            textAlign: "left",
+            width: "100%",
+            margin: "1rem 0 4rem 2rem",
+          }}
+        >
           {user.serviceList.map((service) => {
             return (
               <Card
                 key={service.serviceNumber}
-                sx={{ m: "2rem", position: "relative" }}
+                sx={{
+                  mx: "1rem",
+                  my: "0.5rem",
+                  position: "relative",
+                  minWidth: "25rem",
+                }}
               >
-                <CardContent sx={{ mr: "2rem" }}>
+                <CardContent sx={{ mr: "1rem" }}>
                   <Typography gutterBottom>
                     <strong>Service Number:</strong> {service.serviceNumber}
                   </Typography>
@@ -170,10 +196,7 @@ const Dashboard = () => {
             );
           })}
         </Box>
-        <Button variant="contained" onClick={() => setDialogOpen(true)}>
-          New Service
-        </Button>
-      </Container>
+      </Box>
       <Dialog open={dialogOpen} onClose={dialogClose}>
         <DialogTitle>Add Service Number</DialogTitle>
         <Box component="form" onSubmit={handleFormSubmit} noValidate>

@@ -11,19 +11,20 @@ import {
   Button,
   Container,
 } from "@mui/material";
+import { useNavigate } from "react-router";
 
 const Signup = () => {
-  // set initial form state
+  let navigate = useNavigate();
   const [userFormData, setUserFormData] = useState({
     username: "",
     email: "",
     password: "",
   });
-  // set state for form validation
+
   const [validated] = useState(false);
-  // set state for alert
+
   const [showAlert, setShowAlert] = useState(false);
-  // eslint-disable-next-line no-unused-vars
+
   const [addUser, { error, data }] = useMutation(ADD_USER);
 
   const handleInputChange = (event) => {
@@ -34,7 +35,6 @@ const Signup = () => {
   const handleFormSubmit = async (event) => {
     event.preventDefault();
 
-    // check if form has everything (as per react-bootstrap docs)
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.preventDefault();
@@ -45,8 +45,10 @@ const Signup = () => {
       const { data } = await addUser({
         variables: { ...userFormData },
       });
-      console.log(data);
       Auth.login(data.addUser.token);
+      if (Auth.loggedIn()) {
+        navigate("/dashboard", { replace: true });
+      }
     } catch (err) {
       console.error(err);
       setShowAlert(true);
