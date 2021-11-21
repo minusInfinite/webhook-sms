@@ -11,13 +11,14 @@ import {
   Button,
   Container,
 } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [userFormData, setUserFormData] = useState({
     email: "",
     password: "",
   });
-  const [validated] = useState(false);
+  let navigate = useNavigate();
   const [showAlert, setShowAlert] = useState(false);
   // eslint-disable-next-line no-unused-vars
   const [login, { error, data }] = useMutation(LOGIN_USER);
@@ -43,6 +44,9 @@ const Login = () => {
       });
 
       Auth.login(data.login.token);
+      if (Auth.loggedIn()) {
+        navigate("/dashboard", { replace: true });
+      }
     } catch (err) {
       console.error(err);
       setShowAlert(true);
@@ -73,7 +77,6 @@ const Login = () => {
           component="form"
           onSubmit={handleFormSubmit}
           noValidate
-          validated={validated}
           sx={{ display: "flex", flexDirection: "column", mt: 1 }}
         >
           <Collapse in={showAlert}>

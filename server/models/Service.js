@@ -26,4 +26,11 @@ const serviceSchema = new Schema({
   },
 });
 
+serviceSchema.pre("save", function (next) {
+  if (this.isModified("usageCost")) {
+    this.usageCost = this.usageCost.toFixed(3);
+  }
+  next();
+});
+
 export default serviceSchema;
