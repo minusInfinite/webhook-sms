@@ -10,10 +10,12 @@ import { typeDefs, resolvers } from "./schemas/index.js";
 import { authMiddleware } from "./utils/auth.js";
 import webhookRouter from "./controllers/hook.js";
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
 async function startServer(typeDefs, resolvers) {
   const app = express();
-  const __filename = fileURLToPath(import.meta.url);
-  const __dirname = dirname(__filename);
+
   const PORT = process.env.PORT || 3001;
   const gqlServer = new ApolloServer({
     typeDefs,
@@ -33,7 +35,8 @@ async function startServer(typeDefs, resolvers) {
   gqlServer.applyMiddleware({ app });
 
   if (process.env.NODE_ENV === "production") {
-    app.use(express.static(path.join(__dirname, "../client/build")));
+    console.log(path.join(__dirname, "../client/build"));
+    app.use(express.static(path.join(__dirname, "../client/build/")));
   }
 
   db.once("open", () => {

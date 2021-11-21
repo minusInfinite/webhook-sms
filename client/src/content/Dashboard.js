@@ -196,7 +196,6 @@ const Dashboard = () => {
             </Collapse>
             <TextField
               autoFocus
-              error={validated}
               margin="dense"
               id="serviceNumber"
               label="Service Number"
