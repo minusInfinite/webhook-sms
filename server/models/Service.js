@@ -20,10 +20,6 @@ const serviceSchema = new Schema({
     type: Number,
     default: 0,
   },
-  usageCost: {
-    type: Number,
-    default: 0.0,
-  },
 });
 
 export default serviceSchema;

@@ -1,7 +1,7 @@
-import dotenv from "dotenv";
-dotenv.config();
+import "./config/env.js";
 import { fileURLToPath } from "url";
 import { ApolloServer } from "apollo-server-express";
+import { ApolloServerPluginLandingPageGraphQLPlayground } from "apollo-server-core";
 import express from "express";
 import path, { dirname } from "path";
 import db from "./config/connection.js";
@@ -17,9 +17,11 @@ async function startServer(typeDefs, resolvers) {
   const gqlServer = new ApolloServer({
     typeDefs,
     resolvers,
+    introspection: true,
     context: ({ req, res }) => {
       return authMiddleware({ req: req });
     },
+    plugins: [ApolloServerPluginLandingPageGraphQLPlayground()],
   });
 
   await gqlServer.start();

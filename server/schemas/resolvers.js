@@ -1,14 +1,25 @@
 import { AuthenticationError } from "apollo-server-errors";
 import User from "../models/User.js";
+import ServiceList from "../models/ServiceList.js";
 import { signToken } from "../utils/auth.js";
 
 const resolvers = {
   Query: {
     me: async (parent, args, context) => {
       if (context.user) {
-        return User.findOne({ _id: context.user._id });
+        return await User.findById(context.user._id)
+          .populate("serviceList")
+          .populate("serviceListCount");
       }
       throw new AuthenticationError("You need to be logged in");
+    },
+    listUsers: async (parent, args, context) => {
+      if (context.user.isadmin) {
+        return await User.find()
+          .populate("serviceList")
+          .populate("serviceListCount");
+      }
+      throw new AuthenticationError("You need to be an Admin");
     },
   },
 
@@ -18,8 +29,18 @@ const resolvers = {
       const token = signToken(user);
       return { token, user };
     },
+    makeAdmin: async (parent, { username }, context) => {
+      if (context.user.isadmin) {
+        const user = await User.findOne({ username: username });
+        user.isadmin = true;
+
+        return user;
+      }
+    },
     login: async (parent, { email, password }) => {
-      const user = await User.findOne({ email });
+      const user = await User.findOne({ email })
+        .populate("serviceList")
+        .populate("serviceListCount");
 
       if (!user) {
         throw new AuthenticationError("No user found with this email address");
@@ -35,43 +56,73 @@ const resolvers = {
 
       return { token, user };
     },
-    addMsgTemplate: async (parent, { template }, context) => {
+    addServiceList: async (parent, args, context) => {
       if (context.user) {
-        return User.findOneAndUpdate(
-          { _id: context.user._id },
-          {
-            $set: { msgTemplate: template },
-          },
-          { new: true }
-        );
+        await ServiceList.create({ user: context.user._id });
+        return await User.findById(context.user._id)
+          .populate("serviceList")
+          .populate("serviceListCount");
       }
       throw new AuthenticationError("You need to be logged in");
     },
-    saveService: async (parent, { serviceNumber }, context) => {
+    saveServiceList: async (parent, args, context) => {
+      if (context.user) {
+        const serviceList = ServiceList.findOne({
+          _id: args.listId,
+          user: context.user._id,
+        });
+        if (args.changeKey) {
+          serviceList.key = "";
+          await serviceList.save();
+        }
+        if (args.template) {
+          serviceList.msgTemplate = args.template;
+          await serviceList.save();
+        }
+        return await User.findById(context.user._id)
+          .populate("serviceList")
+          .populate("serviceListCount");
+      }
+      throw new AuthenticationError("You need to be logged in");
+    },
+    saveService: async (parent, { listId, serviceNumber }, context) => {
       const service = serviceNumber;
       if (context.user) {
-        const user = await User.findOne({ _id: context.user._id });
-        const serviceFound = user.serviceList.find(
+        const serviceList = await ServiceList.findOne({
+          _id: listId,
+          user: context.user._id,
+        });
+        const serviceFound = serviceList.serviceList.find(
           ({ serviceNumber }) => serviceNumber === service
         );
-        if (!user.serviceList || !serviceFound) {
-          return User.findOneAndUpdate(
-            { _id: context.user._id },
-            { $addToSet: { serviceList: { serviceNumber: service } } },
+        if (!serviceList.services || !serviceFound) {
+          await ServiceList.findOneAndUpdate(
+            { _id: listId, user: context.user._id },
+            {
+              $addToSet: {
+                services: { serviceNumber: service },
+              },
+            },
             { new: true, runValidators: true }
           );
+          return await User.findById(context.user._id)
+            .populate("serviceList")
+            .populate("serviceListCount");
         }
         throw new Error("Number already exists");
       }
       throw new AuthenticationError("You need to be logged in");
     },
-    removeService: async (parent, { serviceNumber }, context) => {
+    removeService: async (parent, { listId, serviceNumber }, context) => {
       if (context.user) {
-        return User.findOneAndUpdate(
-          { _id: context.user._id },
-          { $pull: { serviceList: { serviceNumber } } },
+        await ServiceList.findOneAndUpdate(
+          { _id: listId, user: context.user },
+          { $pull: { services: { serviceNumber } } },
           { new: true }
         );
+        return await User.findById(context.user._id)
+          .populate("serviceList")
+          .populate("serviceListCount");
       }
       throw new AuthenticationError("You need to be logged in");
     },
