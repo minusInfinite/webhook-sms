@@ -139,7 +139,7 @@ const Dashboard = () => {
         >
           New Service
         </Button>
-        <Box
+        {/* <Box
           sx={{
             justifySelf: "center",
             display: "flex",
@@ -195,7 +195,7 @@ const Dashboard = () => {
               </Card>
             );
           })}
-        </Box>
+        </Box> */}
       </Box>
       <Dialog open={dialogOpen} onClose={dialogClose}>
         <DialogTitle>Add Service Number</DialogTitle>

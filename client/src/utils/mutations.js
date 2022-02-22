@@ -8,16 +8,6 @@ export const LOGIN_USER = gql`
         _id
         username
         email
-        serviceCount
-        key
-        msgTemplate
-        serviceList {
-          serviceNumber
-          lastMessage
-          lastStatus
-          messageCount
-          usageCost
-        }
       }
     }
   }

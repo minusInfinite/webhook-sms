@@ -6,8 +6,6 @@ export const GET_ME = gql`
       _id
       username
       email
-      serviceCount
-      key
       msgTemplate
       serviceList {
         serviceNumber
