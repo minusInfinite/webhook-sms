@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useMutation, useQuery } from '@apollo/client';
 import auth from '../utils/auth';
@@ -66,7 +66,7 @@ const Dashboard = () => {
     return navigate('/', { replace: true });
   }
 
-  if (addSLMutation.loading) {
+  if (addSLMutation.loading || removeSLMutation.loading) {
     addLoadingState(true);
   }
 
