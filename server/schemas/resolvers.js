@@ -56,9 +56,10 @@ const resolvers = {
 
       return { token, user };
     },
-    addServiceList: async (parent, args, context) => {
+    addServiceList: async (parent, { listName }, context) => {
       if (context.user) {
-        await ServiceList.create({ user: context.user._id });
+        console.log(listName);
+        await ServiceList.create({ user: context.user._id, name: listName });
         return await User.findById(context.user._id)
           .populate("serviceList")
           .populate("serviceListCount");
@@ -67,12 +68,16 @@ const resolvers = {
     },
     saveServiceList: async (parent, args, context) => {
       if (context.user) {
-        const serviceList = ServiceList.findOne({
+        const serviceList = await ServiceList.findOne({
           _id: args.listId,
           user: context.user._id,
         });
         if (args.changeKey) {
           serviceList.key = "";
+          await serviceList.save();
+        }
+        if (args.newName) {
+          serviceList.name = args.newName;
           await serviceList.save();
         }
         if (args.template) {
@@ -92,7 +97,7 @@ const resolvers = {
           _id: listId,
           user: context.user._id,
         });
-        const serviceFound = serviceList.serviceList.find(
+        const serviceFound = serviceList.services.find(
           ({ serviceNumber }) => serviceNumber === service
         );
         if (!serviceList.services || !serviceFound) {
@@ -118,6 +123,18 @@ const resolvers = {
         await ServiceList.findOneAndUpdate(
           { _id: listId, user: context.user },
           { $pull: { services: { serviceNumber } } },
+          { new: true }
+        );
+        return await User.findById(context.user._id)
+          .populate("serviceList")
+          .populate("serviceListCount");
+      }
+      throw new AuthenticationError("You need to be logged in");
+    },
+    removeServiceList: async (parent, { listId }, context) => {
+      if (context.user) {
+        await ServiceList.findOneAndDelete(
+          { _id: listId, user: context.user },
           { new: true }
         );
         return await User.findById(context.user._id)

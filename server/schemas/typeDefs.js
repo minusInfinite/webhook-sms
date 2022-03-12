@@ -7,12 +7,12 @@ const typeDefs = gql`
     lastMessage: String
     lastStatus: String
     messageCount: Int
-    isadmin: Boolean
   }
 
   type ServiceList {
     _id: ID!
-    key: String
+    name: String!
+    key: String!
     msgTemplate: String
     serviceCount: Int
     usageCost: Float
@@ -25,6 +25,7 @@ const typeDefs = gql`
     email: String!
     serviceList: [ServiceList]
     serviceListCount: Int
+    isadmin: Boolean!
   }
 
   type Auth {
@@ -41,8 +42,14 @@ const typeDefs = gql`
     addUser(username: String!, email: String!, password: String!): Auth
     login(email: String!, password: String!): Auth
     makeAdmin(username: String!): User
-    addServiceList: User
-    saveServiceList(listId: ID!, changeKey: Boolean, template: String): User
+    addServiceList(listName: String!): User
+    saveServiceList(
+      listId: ID!
+      changeKey: Boolean
+      template: String
+      newName: String
+    ): User
+    removeServiceList(listId: ID!): User
     saveService(listId: ID!, serviceNumber: String!): User
     removeService(listId: ID!, serviceNumber: String!): User
   }

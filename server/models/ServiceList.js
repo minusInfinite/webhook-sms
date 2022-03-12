@@ -7,6 +7,10 @@ const { Schema, model } = mongoose;
 
 const serviceListSchema = new Schema(
   {
+    name: {
+      type: String,
+      default: "New Service List",
+    },
     user: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,

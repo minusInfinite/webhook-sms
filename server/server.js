@@ -1,10 +1,12 @@
 import "./config/env.js";
+import db from "./config/connection.js";
 import { fileURLToPath } from "url";
+import path, { dirname } from "path";
+import express from "express";
+import morgan from "morgan";
 import { ApolloServer } from "apollo-server-express";
 import { ApolloServerPluginLandingPageGraphQLPlayground } from "apollo-server-core";
-import express from "express";
-import path, { dirname } from "path";
-import db from "./config/connection.js";
+import "./utils/logger.js";
 import { typeDefs, resolvers } from "./schemas/index.js";
 import { authMiddleware } from "./utils/auth.js";
 import webhookRouter from "./controllers/hook.js";
@@ -28,6 +30,8 @@ async function startServer(typeDefs, resolvers) {
 
   app.use(express.urlencoded({ extended: true }));
   app.use(express.json());
+  app.use(morgan("tiny"));
+  app.use(morgan(":graphql-log"));
   app.use("/hook", webhookRouter);
 
   gqlServer.applyMiddleware({ app });
