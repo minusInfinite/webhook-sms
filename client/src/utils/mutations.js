@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client/";
+import { gql } from '@apollo/client';
 
 export const LOGIN_USER = gql`
   mutation login($email: String!, $password: String!) {
@@ -8,6 +8,8 @@ export const LOGIN_USER = gql`
         _id
         username
         email
+        serviceListCount
+        isadmin
       }
     }
   }
@@ -21,69 +23,133 @@ export const ADD_USER = gql`
         _id
         username
         email
-        serviceCount
+        serviceListCount
+        isadmin
+      }
+    }
+  }
+`;
+
+export const ADD_SERVICE_LIST = gql`
+  mutation addServiceList($listName: String!) {
+    addServiceList(listName: $listName) {
+      _id
+      username
+      email
+      serviceListCount
+      serviceList {
+        _id
+        name
         key
         msgTemplate
-        serviceList {
+        serviceCount
+        usageCost
+      }
+    }
+  }
+`;
+
+export const SAVE_SERVICE_LIST = gql`
+  mutation saveServiceList(
+    $listId: ID!
+    $changeKey: Boolean
+    $template: String
+    $newName: String
+  ) {
+    saveServiceList(
+      listId: $listId
+      changeKey: $changeKey
+      template: $template
+      newName: $newName
+    ) {
+      _id
+      username
+      email
+      serviceListCount
+      isadmin
+      serviceList {
+        _id
+        name
+        key
+        msgTemplate
+      }
+    }
+  }
+`;
+
+export const SAVE_SERVICE = gql`
+  mutation saveService($listId: ID!, $serviceNumber: String!) {
+    saveService(listId: $listId, serviceNumber: $serviceNumber) {
+      _id
+      username
+      email
+      serviceListCount
+      serviceList {
+        _id
+        name
+        key
+        msgTemplate
+        serviceCount
+        usageCost
+        services {
+          _id
           serviceNumber
           lastMessage
           lastStatus
           messageCount
-          usageCost
         }
       }
     }
   }
 `;
 
-export const SET_MSG_TEMPLATE = gql`
-  mutation addMsgTemplate($template: String!) {
-    addMsgTemplate(template: $template) {
+export const REMOVE_SERVICE = gql`
+  mutation removeService($listId: ID!, $serviceNumber: String!) {
+    removeService(listId: $listId, serviceNumber: $serviceNumber) {
       _id
       username
       email
-      serviceCount
-      key
-      msgTemplate
-    }
-  }
-`;
-
-export const SAVE_SERVICE = gql`
-  mutation saveService($serviceNumber: String!) {
-    saveService(serviceNumber: $serviceNumber) {
-      _id
-      email
-      username
-      key
-      msgTemplate
-      serviceCount
+      serviceListCount
       serviceList {
-        serviceNumber
-        lastMessage
-        lastStatus
-        messageCount
+        _id
+        name
+        key
+        msgTemplate
+        serviceCount
         usageCost
+        services {
+          _id
+          serviceNumber
+          lastMessage
+          lastStatus
+          messageCount
+        }
       }
     }
   }
 `;
 
-export const REMOVE_SERVICE = gql`
-  mutation removeService($serviceNumber: String!) {
-    removeService(serviceNumber: $serviceNumber) {
+export const REMOVE_SERVICE_LIST = gql`
+  mutation removeServiceList($listId: ID!) {
+    removeServiceList(listId: $listId) {
       _id
       username
       email
-      serviceCount
-      key
-      msgTemplate
+      serviceListCount
       serviceList {
-        serviceNumber
-        lastMessage
-        lastStatus
-        messageCount
+        _id
+        name
+        key
+        msgTemplate
+        serviceCount
         usageCost
+        services {
+          _id
+          serviceNumber
+          lastMessage
+          lastStatus
+          messageCount
+        }
       }
     }
   }
