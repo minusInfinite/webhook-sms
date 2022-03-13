@@ -33,18 +33,8 @@ export const ADD_USER = gql`
 export const ADD_SERVICE_LIST = gql`
   mutation addServiceList($listName: String!) {
     addServiceList(listName: $listName) {
-      _id
-      username
-      email
-      serviceListCount
-      serviceList {
-        _id
-        name
-        key
-        msgTemplate
-        serviceCount
-        usageCost
-      }
+      id
+      success
     }
   }
 `;
@@ -62,43 +52,17 @@ export const SAVE_SERVICE_LIST = gql`
       template: $template
       newName: $newName
     ) {
-      _id
-      username
-      email
-      serviceListCount
-      isadmin
-      serviceList {
-        _id
-        name
-        key
-        msgTemplate
-      }
+      id
+      success
     }
   }
 `;
 
-export const SAVE_SERVICE = gql`
-  mutation saveService($listId: ID!, $serviceNumber: String!) {
-    saveService(listId: $listId, serviceNumber: $serviceNumber) {
-      _id
-      username
-      email
-      serviceListCount
-      serviceList {
-        _id
-        name
-        key
-        msgTemplate
-        serviceCount
-        usageCost
-        services {
-          _id
-          serviceNumber
-          lastMessage
-          lastStatus
-          messageCount
-        }
-      }
+export const ADD_SERVICE = gql`
+  mutation addService($listId: ID!, $serviceNumber: String!) {
+    addService(listId: $listId, serviceNumber: $serviceNumber) {
+      id
+      success
     }
   }
 `;
@@ -106,25 +70,8 @@ export const SAVE_SERVICE = gql`
 export const REMOVE_SERVICE = gql`
   mutation removeService($listId: ID!, $serviceNumber: String!) {
     removeService(listId: $listId, serviceNumber: $serviceNumber) {
-      _id
-      username
-      email
-      serviceListCount
-      serviceList {
-        _id
-        name
-        key
-        msgTemplate
-        serviceCount
-        usageCost
-        services {
-          _id
-          serviceNumber
-          lastMessage
-          lastStatus
-          messageCount
-        }
-      }
+      id
+      success
     }
   }
 `;
@@ -132,25 +79,8 @@ export const REMOVE_SERVICE = gql`
 export const REMOVE_SERVICE_LIST = gql`
   mutation removeServiceList($listId: ID!) {
     removeServiceList(listId: $listId) {
-      _id
-      username
-      email
-      serviceListCount
-      serviceList {
-        _id
-        name
-        key
-        msgTemplate
-        serviceCount
-        usageCost
-        services {
-          _id
-          serviceNumber
-          lastMessage
-          lastStatus
-          messageCount
-        }
-      }
+      id
+      success
     }
   }
 `;

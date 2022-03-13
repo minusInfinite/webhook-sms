@@ -26,6 +26,7 @@ export default function DialogForm({
   dialogOnClose,
   alertIsOpen,
   alertOnClose,
+  diaglogHeader,
   formId,
   submitHandler,
   inputChangeHandler,
@@ -44,7 +45,7 @@ export default function DialogForm({
     >
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Add a new Service List</ModalHeader>
+        <ModalHeader>{diaglogHeader}</ModalHeader>
         <ModalCloseButton />
         <chakra.form
           onSubmit={e => {

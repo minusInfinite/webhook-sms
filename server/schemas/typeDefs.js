@@ -28,6 +28,11 @@ const typeDefs = gql`
     isadmin: Boolean!
   }
 
+  type Status {
+    id: ID!
+    success: Boolean!
+  }
+
   type Auth {
     token: ID!
     user: User
@@ -41,17 +46,17 @@ const typeDefs = gql`
   type Mutation {
     addUser(username: String!, email: String!, password: String!): Auth
     login(email: String!, password: String!): Auth
-    makeAdmin(username: String!): User
-    addServiceList(listName: String!): User
+    makeAdmin(username: String!): Status
+    addServiceList(listName: String!): Status
     saveServiceList(
       listId: ID!
       changeKey: Boolean
       template: String
       newName: String
-    ): User
-    removeServiceList(listId: ID!): User
-    saveService(listId: ID!, serviceNumber: String!): User
-    removeService(listId: ID!, serviceNumber: String!): User
+    ): Status
+    removeServiceList(listId: ID!): Status
+    addService(listId: ID!, serviceNumber: String!): Status
+    removeService(listId: ID!, serviceNumber: String!): Status
   }
 `;
 

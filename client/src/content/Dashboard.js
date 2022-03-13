@@ -1,8 +1,13 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useMutation, useQuery } from '@apollo/client';
 import auth from '../utils/auth';
-import { ADD_SERVICE_LIST, REMOVE_SERVICE_LIST } from '../utils/mutations';
+import {
+  ADD_SERVICE,
+  ADD_SERVICE_LIST,
+  REMOVE_SERVICE,
+  REMOVE_SERVICE_LIST,
+} from '../utils/mutations';
 import { GET_ME } from '../utils/queries';
 import {
   Box,
@@ -13,20 +18,37 @@ import {
   useColorModeValue,
   CircularProgress,
   CloseButton,
+  Flex,
+  Collapse,
+  FormControl,
+  FormLabel,
+  Input,
+  Container,
+  ButtonGroup,
+  Link,
+  Stack,
+  HStack,
 } from '@chakra-ui/react';
 import DialogForm from '../components/DialogForm';
+import ErrorBoundary from '../components/ErrorBoundary';
 
 const Dashboard = () => {
   const navigate = useNavigate();
   const userQuery = useQuery(GET_ME, { fetchPolicy: 'cache-and-network' });
   const [userData, setUserData] = useState();
+  const [selectServiceList, setServiceList] = useState(undefined);
+  const [currentServiceList, setCurrentList] = useState([]);
   const [isAddLoading, addLoadingState] = useState(false);
   const [serviceListFormData, setServiceListFormData] = useState({
     listName: '',
   });
+  const [serviceNumberFormData, setServiceNumberFormData] = useState({
+    serviceNumber: '',
+  });
 
   const alertOpen = useDisclosure();
   const dialogOpen = useDisclosure();
+  const addServiceOpen = useDisclosure();
 
   const [addServiceList, addSLMutation] = useMutation(ADD_SERVICE_LIST, {
     variables: {
@@ -46,6 +68,22 @@ const Dashboard = () => {
     }
   );
 
+  const [removeService, rmServiceMutation] = useMutation(REMOVE_SERVICE, {
+    onCompleted: () => navigate(0),
+  });
+
+  const [addService, addServiceMut] = useMutation(ADD_SERVICE, {
+    variables: {
+      listId: selectServiceList,
+      serviceNumber: serviceNumberFormData.serviceNumber,
+    },
+    onCompleted: () => {
+      setServiceListFormData({ serviceNumber: '' });
+      addServiceOpen.onClose();
+      navigate(0);
+    },
+  });
+
   const fields = [
     {
       id: 'listName',
@@ -62,9 +100,20 @@ const Dashboard = () => {
     innerBoxGB = useColorModeValue('gray.800', 'white'),
     cardColor = useColorModeValue('gray.600', 'gray.400');
 
-  if (!auth.loggedIn()) {
-    return navigate('/', { replace: true });
-  }
+  useEffect(() => {
+    if (!auth.loggedIn()) {
+      return navigate('/', { replace: true });
+    }
+  });
+
+  useEffect(() => {
+    if (selectServiceList !== undefined) {
+      setCurrentList(
+        userData.serviceList.find(({ _id }) => _id === selectServiceList)
+          ?.services
+      );
+    }
+  }, [selectServiceList, setCurrentList, userData]);
 
   if (addSLMutation.loading || removeSLMutation.loading) {
     addLoadingState(true);
@@ -93,6 +142,23 @@ const Dashboard = () => {
     }
   };
 
+  const handleDeleteService = async (serviceListId, serviceNumber) => {
+    const token = auth.loggedIn() ? auth.getToken() : null;
+
+    if (!token) {
+      return false;
+    }
+
+    try {
+      let listId = serviceListId;
+      await removeService({
+        variables: { listId: listId, serviceNumber: serviceNumber },
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   const updateUserData = async data => {
     if (userData && !userQuery.loading) {
       setUserData(await userQuery.data.me);
@@ -111,16 +177,165 @@ const Dashboard = () => {
           alignSelf="flex-start"
           textAlign="center"
         >
-          <Box mb="1rem" mt="1rem">
-            <Text as="span" sx={{ mx: '0.8rem' }}>
-              <strong>Username: </strong>
-              {userData.username}
-            </Text>
-            <Text as="span" sx={{ mx: '0.8rem' }}>
-              <strong>Service Lists: </strong>
-              {userData.serviceListCount}
-            </Text>
-          </Box>
+          <Flex direction={'column'}>
+            <Box mb="1rem" mt="1rem">
+              <Text as="span" sx={{ mx: '0.8rem' }}>
+                <strong>Username: </strong>
+                {userData.username}
+              </Text>
+              <Text as="span" sx={{ mx: '0.8rem' }}>
+                <strong>Service Lists: </strong>
+                {userData.serviceListCount}
+              </Text>
+            </Box>
+            {selectServiceList !== undefined ? (
+              <ErrorBoundary>
+                <Box>
+                  <Text>
+                    {uri}/hook/
+                    {
+                      userData.serviceList.find(
+                        ({ _id }) => _id === selectServiceList
+                      )?.key
+                    }
+                  </Text>
+                  <Button
+                    my={'1rem'}
+                    w={'25%'}
+                    minH={'2.5rem'}
+                    colorScheme={'gray'}
+                    variant="solid"
+                    onClick={() => addServiceOpen.onOpen()}
+                  >
+                    Add Service Number
+                  </Button>
+                  <Collapse in={addServiceOpen.isOpen}>
+                    <Container>
+                      <chakra.form
+                        onSubmit={e => {
+                          e.preventDefault();
+                          addService();
+                        }}
+                        py={2}
+                        px={4}
+                        bg={outerBoxGB}
+                        rounded="lg"
+                      >
+                        <Text p={4}>
+                          {' '}
+                          Add a service number, be sure to confirm the{' '}
+                          <Link
+                            href="https://countrycode.org/"
+                            targer="_blank"
+                            rel="noreferrer"
+                          >
+                            county code
+                          </Link>
+                        </Text>
+                        <FormControl>
+                          <FormLabel htmlFor="addServiceNumber">
+                            Enter Service Number
+                          </FormLabel>
+                          <Input
+                            onChange={e => {
+                              setServiceNumberFormData({
+                                ...serviceNumberFormData,
+                                serviceNumber: e.target.value,
+                              });
+                            }}
+                            value={serviceNumberFormData.serviceNumber}
+                          />
+                        </FormControl>
+                        <ButtonGroup my="1rem">
+                          <Button
+                            type="submit"
+                            isLoading={addServiceMut.loading}
+                          >
+                            Add
+                          </Button>
+                          <Button
+                            onClick={() => {
+                              setServiceNumberFormData({
+                                ...serviceNumberFormData,
+                                serviceNumber: '',
+                              });
+                              addServiceOpen.onClose();
+                            }}
+                          >
+                            Cancel
+                          </Button>
+                        </ButtonGroup>
+                      </chakra.form>
+                    </Container>
+                  </Collapse>
+                  <Stack
+                    spacing={4}
+                    my="1rem"
+                    direction={{ base: 'column', md: 'row' }}
+                  >
+                    {currentServiceList.length === 0
+                      ? null
+                      : currentServiceList.map(service => {
+                          return (
+                            <Box
+                              pos="relative"
+                              id={service.serviceNumber}
+                              key={service._id}
+                              w={{ base: 'full', md: '25%' }}
+                              textAlign="initial"
+                              bg={outerBoxGB}
+                              shadow="lg"
+                              rounded="lg"
+                            >
+                              <CloseButton
+                                color="red.500"
+                                pos="absolute"
+                                top="8px"
+                                right="8px"
+                                size="sm"
+                                onClick={() => {
+                                  handleDeleteService(
+                                    selectServiceList,
+                                    service.serviceNumber
+                                  );
+                                }}
+                              />
+                              <Box px={4} py={2}>
+                                <chakra.h1
+                                  color={innerBoxGB}
+                                  fontWeight="bold"
+                                  fontSize="xl"
+                                  textTransform="uppercase"
+                                >
+                                  {service.serviceNumber}
+                                </chakra.h1>
+                                <chakra.p
+                                  mt={1}
+                                  fontSize="sm"
+                                  color={cardColor}
+                                >
+                                  <chakra.strong>Status:</chakra.strong>
+                                  {service.LastStatus}
+                                  <br />
+                                  <chakra.strong>
+                                    last Trigger Date:
+                                  </chakra.strong>
+                                  {service.serviceCount}
+                                  <br />
+                                  <chakra.strong>
+                                    Total Usage Cost:
+                                  </chakra.strong>
+                                  {service.usageCost}
+                                </chakra.p>
+                              </Box>
+                            </Box>
+                          );
+                        })}
+                  </Stack>
+                </Box>
+              </ErrorBoundary>
+            ) : null}
+          </Flex>
         </Box>
         <Box
           as="aside"
@@ -173,6 +388,8 @@ const Dashboard = () => {
                       fontWeight="bold"
                       fontSize="2xl"
                       textTransform="uppercase"
+                      cursor={'pointer'}
+                      onClick={() => setServiceList(servicelist._id)}
                     >
                       {servicelist.name}
                     </chakra.h1>
@@ -193,6 +410,7 @@ const Dashboard = () => {
           </Box>
         </Box>
         <DialogForm
+          diaglogHeader={'Add a Service List'}
           initialFocusRef={initialRef}
           dialogIsOpen={dialogOpen.isOpen}
           dialogOnClose={dialogOpen.onClose}

@@ -10,9 +10,7 @@ function MainContainer() {
     <>
       <Box className="wrapper" bg={'gray.300'}>
         <Navbar />
-        <ErrorBoundary>
-          <Outlet />
-        </ErrorBoundary>
+        <Outlet />
         <Footer />
       </Box>
     </>

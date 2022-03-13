@@ -1,50 +1,62 @@
-import { Card, CardContent, IconButton, Text } from "@chakra-ui/react";
+import { Box, CloseButton, chakra } from '@chakra-ui/react';
+import ErrorBoundary from './ErrorBoundary';
 
-function ServiceCards(props) {
+function ServiceCards({
+  id,
+  key,
+  outerBoxGB,
+  innerBoxGB,
+  deleteCard,
+  cardTitle,
+  cardColor,
+  msgTemplate,
+  serviceCount,
+  usageCost,
+  ...props
+}) {
   return (
     <>
-      <Card
-        key={props.serviceNumber}
-        sx={{
-          mx: "1rem",
-          my: "0.5rem",
-          position: "relative",
-          minWidth: "25rem",
-        }}
+      <Box
+        pos="relative"
+        id={id}
+        key={key}
+        mx="auto"
+        my="1rem"
+        bg={outerBoxGB}
+        shadow="lg"
+        rounded="lg"
       >
-        <CardContent sx={{ mr: "1rem" }}>
-          <Text mb={1}>
-            <strong>Service Number:</strong> {props.serviceNumber}
-          </Text>
-          <Text mb={1}>
-            <strong>Last Sent At:</strong> {props.lastMessage}
-          </Text>
-          <Text mb={1}>
-            <strong>Last Message Status:</strong> {props.lastStatus}
-          </Text>
-          <Text mb={1}>
-            <strong>Total Message Count:</strong>
-            {props.messageCount}
-          </Text>
-          <Text mb={1}>
-            <strong>Total Usage Cost:</strong>
-            {props.usageCost}
-          </Text>
-        </CardContent>
-        <IconButton
-          variant="contained"
-          color="error"
-          aria-label="delete service number"
-          onClick={() => props.delete(props.serviceNumber)}
-          sx={{
-            position: "absolute",
-            right: "0.1rem",
-            top: "0.1rem",
+        <CloseButton
+          color="red.500"
+          pos="absolute"
+          top="8px"
+          right="8px"
+          size="sm"
+          onClick={() => {
+            deleteCard(props.key);
           }}
-        >
-          <ClearIcon />
-        </IconButton>
-      </Card>
+        />
+        <Box px={4} py={2}>
+          <chakra.h1
+            color={innerBoxGB}
+            fontWeight="bold"
+            fontSize="2xl"
+            textTransform="uppercase"
+          >
+            {cardTitle}
+          </chakra.h1>
+          <chakra.p mt={1} fontSize="sm" color={cardColor}>
+            <chakra.strong>Message Template:</chakra.strong>
+            {msgTemplate}
+            <br />
+            <chakra.strong>Service Count:</chakra.strong>
+            {serviceCount}
+            <br />
+            <chakra.strong>Total Usage Cost:</chakra.strong>
+            {usageCost}
+          </chakra.p>
+        </Box>
+      </Box>
     </>
   );
 }
