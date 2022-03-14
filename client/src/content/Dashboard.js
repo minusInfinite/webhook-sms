@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useMutation, useQuery } from '@apollo/client';
+import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
 import auth from '../utils/auth';
 import {
   ADD_SERVICE,
@@ -35,7 +35,14 @@ import ErrorBoundary from '../components/ErrorBoundary';
 const Dashboard = () => {
   const navigate = useNavigate();
   const userQuery = useQuery(GET_ME, { fetchPolicy: 'cache-and-network' });
+  /*const [pullUserData, userQuery] = useLazyQuery(GET_ME, {
+    fetchPolicy: 'cache-and-network',
+  }); */
   const [userData, setUserData] = useState();
+  const [gqlErrors, setGqlErrors] = useState({
+    status: false,
+    message: '',
+  });
   const [selectServiceList, setServiceList] = useState(undefined);
   const [currentServiceList, setCurrentList] = useState([]);
   const [isAddLoading, addLoadingState] = useState(false);
@@ -45,7 +52,6 @@ const Dashboard = () => {
   const [serviceNumberFormData, setServiceNumberFormData] = useState({
     serviceNumber: '',
   });
-
   const alertOpen = useDisclosure();
   const dialogOpen = useDisclosure();
   const addServiceOpen = useDisclosure();
@@ -84,16 +90,6 @@ const Dashboard = () => {
     },
   });
 
-  const fields = [
-    {
-      id: 'listName',
-      label: 'List Name',
-      required: true,
-    },
-  ];
-
-  const uri = window.location.origin.toString();
-
   const initialRef = useRef();
 
   const outerBoxGB = useColorModeValue('white', 'gray.800'),
@@ -106,6 +102,21 @@ const Dashboard = () => {
     }
   });
 
+  /*useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const userdata = await pullUserData();
+        setUserData(userdata.data.me);
+      } catch (e) {
+        setGqlErrors({
+          status: true,
+          message: e.message,
+        });
+      }
+    };
+    fetchUser();
+  });*/
+
   useEffect(() => {
     if (selectServiceList !== undefined) {
       setCurrentList(
@@ -114,6 +125,13 @@ const Dashboard = () => {
       );
     }
   }, [selectServiceList, setCurrentList, userData]);
+
+  const dismissErrors = gqlFunction => {
+    if (gqlErrors) {
+      gqlFunction.reset();
+      setGqlErrors({ status: false, message: '' });
+    }
+  };
 
   if (addSLMutation.loading || removeSLMutation.loading) {
     addLoadingState(true);
@@ -126,6 +144,16 @@ const Dashboard = () => {
       </>
     );
   }
+
+  const fields = [
+    {
+      id: 'listName',
+      label: 'List Name',
+      required: true,
+    },
+  ];
+
+  const uri = window.location.origin.toString();
 
   const handleDeleteServiceList = async serviceListId => {
     const token = auth.loggedIn() ? auth.getToken() : null;
