@@ -23,8 +23,8 @@ const authMiddleware = ({ req }) => {
   return req;
 };
 
-const signToken = ({ email, username, _id }) => {
-  const payload = { email, username, _id };
+const signToken = ({ email, username, _id, isadmin }) => {
+  const payload = { email, username, _id, isadmin };
   return jwt.sign({ data: payload }, secret, { expiresIn: expiration });
 };
 

@@ -1,10 +1,7 @@
-import mongoose from 'mongoose' 
-import bcrypt from 'bcrypt'
-import {v4 as uuid4} from "uuid"
+import mongoose from "mongoose";
+import bcrypt from "bcrypt";
 
-import serviceSchema from './Service.js'
-
-const { Schema, model } = mongoose
+const { Schema, model } = mongoose;
 
 const userSchema = new Schema(
   {
@@ -17,34 +14,31 @@ const userSchema = new Schema(
       type: String,
       required: true,
       unique: true,
-      match: [/.+@.+\..+/, 'Must use a valid email address'],
+      match: [/.+@.+\..+/, "Must use a valid email address"],
     },
     password: {
       type: String,
       required: true,
     },
-    key: {
-      type: String,
-      default: uuid4()
+    isadmin: {
+      type: Boolean,
+      default: false,
     },
-    msgTemplate: {
-      type: String,
-      default:"This is a Test Message"
-    },
-    serviceList: [serviceSchema]
   },
   {
     toJSON: {
       virtuals: true,
     },
+    toObject: {
+      virtuals: true,
+    },
   }
 );
 
-userSchema.pre('save', async function (next) {
-  if (this.isNew || this.isModified('password') || this.isModified('key')) {
+userSchema.pre("save", async function (next) {
+  if (this.isNew || this.isModified("password")) {
     const saltRounds = 10;
     this.password = await bcrypt.hash(this.password, saltRounds);
-    this.key = uuid4()
   }
 
   next();
@@ -54,10 +48,19 @@ userSchema.methods.isCorrectPassword = async function (password) {
   return bcrypt.compare(password, this.password);
 };
 
-userSchema.virtual('serviceCount').get(function () {
-  return this.serviceList.length;
+userSchema.virtual("serviceList", {
+  ref: "ServiceList",
+  localField: "_id",
+  foreignField: "user",
 });
 
-const User = model('User', userSchema);
+userSchema.virtual("serviceListCount", {
+  ref: "ServiceList",
+  localField: "_id",
+  foreignField: "user",
+  count: true,
+});
+
+const User = model("User", userSchema);
 
 export default User;

@@ -1,12 +1,11 @@
-import mongoose from "mongoose"
-import dotenv from "dotenv"
+import "./env.js";
+import mongoose from "mongoose";
 
-dotenv.config()
-const {connect, connection} = mongoose
+const { connect, connection } = mongoose;
 
-connect(process.env.MONGODB_URI || "mongodb://localhost/googlebooks", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-})
+connect(process.env.MONGODB_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 
-export default connection
+export default connection;

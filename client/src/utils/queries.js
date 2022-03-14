@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client';
 
 export const GET_ME = gql`
   query me {
@@ -6,15 +6,47 @@ export const GET_ME = gql`
       _id
       username
       email
-      serviceCount
+      serviceListCount
+      isadmin
+      serviceList {
+        _id
+        name
+        key
+        msgTemplate
+        serviceCount
+        usageCost
+        services {
+          _id
+          serviceNumber
+          lastMessage
+          lastStatus
+          messageCount
+        }
+      }
+    }
+  }
+`;
+
+export const LIST_ALL = gql`
+  query listUser {
+    _id
+    username
+    email
+    serviceListCount
+    isadmin
+    serviceList {
+      _id
+      name
       key
       msgTemplate
-      serviceList {
+      serviceCount
+      usageCost
+      services {
+        _id
         serviceNumber
         lastMessage
         lastStatus
         messageCount
-        usageCost
       }
     }
   }

@@ -1,4 +1,5 @@
 import axios from "axios";
+import ServiceList from "../models/ServiceList.js";
 import User from "../models/User.js";
 import { DateTime } from "luxon";
 
@@ -8,11 +9,15 @@ const key = process.env.CLICK_SEND_KEY;
 const buff = Buffer.from(`${user}:${key}`, "utf-8");
 const smsAuth = buff.toString("base64");
 
-async function validate(key) {
+async function validate(key, body) {
   try {
-    const user = await User.findOne({ key: key });
-    if (user) {
-      sendSMS(user);
+    let postData = body.message;
+    const serviceList = await ServiceList.findOne({ key: key });
+    if (serviceList && postData) {
+      sendSMS(serviceList, postData);
+      return;
+    } else if (serviceList) {
+      sendSMS(serviceList, undefined);
       return;
     }
     throw new Error("no user found");
@@ -23,12 +28,13 @@ async function validate(key) {
 
 /**
  *
- * @param {User} user
+ * @param {ServiceList} serviceList
  */
-async function sendSMS(user) {
+async function sendSMS(serviceList, postData) {
+  const user = await User.findById(serviceList.user);
   const from = user.username;
-  const body = user.msgTemplate;
-  const send = user.serviceList.map((obj) => {
+  const body = postData || serviceList.msgTemplate;
+  const send = serviceList.services.map((obj) => {
     let sObj = {};
     sObj.body = body;
     sObj.to = obj.serviceNumber;
@@ -51,7 +57,7 @@ async function sendSMS(user) {
     });
 
     const result = sms.data.data;
-    updateDB(user, result);
+    updateDB(serviceList, result);
   } catch (err) {
     console.error(err);
   }
@@ -68,11 +74,11 @@ async function updateDB(document, data) {
   });
 
   for (let i = 0; i < messages.length; i++) {
-    if (document.serviceList[i].serviceNumber === messages[i].serviceNumber) {
-      document.serviceList[i].lastMessage = messages[i].lastMessage;
-      document.serviceList[i].lastStatus = messages[i].lastStatus;
-      document.serviceList[i].messageCount += 1;
-      document.serviceList[i].usageCost += messages[i].cost;
+    if (document.services[i].serviceNumber === messages[i].serviceNumber) {
+      document.services[i].lastMessage = messages[i].lastMessage;
+      document.services[i].lastStatus = messages[i].lastStatus;
+      document.services[i].messageCount += 1;
+      document.usageCost += messages[i].cost;
     }
   }
   try {
