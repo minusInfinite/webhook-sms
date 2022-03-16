@@ -42,6 +42,9 @@ export default function Navbar() {
             <HStack spacing={1} mr={1} color="blue.500" display={'inline-flex'}>
               {Auth.loggedIn() ? (
                 <>
+                  <Button as={RouterLink} to="/help" variant="ghost">
+                    Help
+                  </Button>
                   <Button as={RouterLink} to="/dashboard" variant="ghost">
                     Dashboard
                   </Button>
