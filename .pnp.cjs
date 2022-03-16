@@ -6587,6 +6587,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["@types/nodemailer", [\
+        ["npm:6.4.4", {\
+          "packageLocation": "./.yarn/cache/@types-nodemailer-npm-6.4.4-c5c500abe2-16ed1bad2c.zip/node_modules/@types/nodemailer/",\
+          "packageDependencies": [\
+            ["@types/nodemailer", "npm:6.4.4"],\
+            ["@types/node", "npm:17.0.21"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["@types/parse-json", [\
         ["npm:4.0.0", {\
           "packageLocation": "./.yarn/cache/@types-parse-json-npm-4.0.0-298522afa6-fd6bce2b67.zip/node_modules/@types/parse-json/",\
@@ -15401,6 +15411,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["nodemailer", [\
+        ["npm:6.7.2", {\
+          "packageLocation": "./.yarn/cache/nodemailer-npm-6.7.2-ba5500b754-3c37a40928.zip/node_modules/nodemailer/",\
+          "packageDependencies": [\
+            ["nodemailer", "npm:6.7.2"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["nodemon", [\
         ["npm:2.0.15", {\
           "packageLocation": "./.yarn/unplugged/nodemon-npm-2.0.15-5e88e7aef5/node_modules/nodemon/",\
@@ -19312,6 +19331,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["server", "workspace:server"],\
             ["@types/morgan", "npm:1.9.3"],\
+            ["@types/nodemailer", "npm:6.4.4"],\
             ["apollo-server-core", "virtual:5e2e00b31e527ff544c90eb3e3e3e977a366e52a6e25602d03686a4c9a155eee4d7b92ccdea0b04275344f5b2189eb629d123eb4cc6e1b883b42aea6d965568d#npm:3.6.3"],\
             ["apollo-server-errors", "virtual:5e2e00b31e527ff544c90eb3e3e3e977a366e52a6e25602d03686a4c9a155eee4d7b92ccdea0b04275344f5b2189eb629d123eb4cc6e1b883b42aea6d965568d#npm:3.3.1"],\
             ["apollo-server-express", "virtual:5e2e00b31e527ff544c90eb3e3e3e977a366e52a6e25602d03686a4c9a155eee4d7b92ccdea0b04275344f5b2189eb629d123eb4cc6e1b883b42aea6d965568d#npm:3.6.3"],\
@@ -19325,6 +19345,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["mongojs", "npm:3.1.0"],\
             ["mongoose", "npm:6.2.4"],\
             ["morgan", "npm:1.10.0"],\
+            ["nodemailer", "npm:6.7.2"],\
             ["nodemon", "npm:2.0.15"],\
             ["uuid", "npm:8.3.2"]\
           ],\
