@@ -37,13 +37,12 @@ npm install
 
 You will also need to edit the .env.EXAMPLE file to .env with the following
 
-> MONGODB_URI - _URL to you Mongo DB_
->
-> JWT_SECRET - _The Secrect for you Web Token_
->
-> CLICK_SEND_USER= _The username for your ClickSend account_
->
-> CLICK_SEND_KEY= _The API or Password for your ClickSend account_
+```ini
+MONGODB_URI= #URL to you Mongo DB_
+JWT_SECRET= #The Secrect for you Web Token_
+CLICK_SEND_USER= #The username for your ClickSend account
+CLICK_SEND_KEY= #The API or Password for your ClickSend account
+```
 
 Once you .env is setup you will need to build the client
 
