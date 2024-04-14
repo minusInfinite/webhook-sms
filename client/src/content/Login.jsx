@@ -58,7 +58,6 @@ const Login = () => {
         navigate('/dashboard', { replace: true });
       }
     } catch (err) {
-      console.error(`Errors: ${error}`, `Data: ${data}`, err);
       alertDisplay.onOpen();
     }
 
@@ -89,7 +88,7 @@ const Login = () => {
               <Alert status="error">
                 <AlertIcon />
                 <AlertDescription>
-                  Something went wrong with your login!
+                  {error ? error.message : "Something went wrong with your login!"}
                 </AlertDescription>
                 <CloseButton
                   pos={'absolute'}
