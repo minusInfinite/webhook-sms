@@ -35,7 +35,7 @@ ReactDOM.render(
   <StrictMode>
     <ColorModeScript />
     <BrowserRouter>
-      <ApolloProvider client={client}>
+      <ApolloProvider client={ client }>
         <App />
       </ApolloProvider>
     </BrowserRouter>
