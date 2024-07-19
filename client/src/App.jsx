@@ -1,12 +1,5 @@
 import React from 'react';
 import { ChakraProvider, extendTheme } from '@chakra-ui/react';
-import {
-  ApolloClient,
-  ApolloProvider,
-  createHttpLink,
-  InMemoryCache,
-} from '@apollo/client';
-import { setContext } from '@apollo/client/link/context';
 import { Route, Routes } from 'react-router-dom';
 import MainContainer from './components/MainContainer';
 import Home from './content/Home';
@@ -21,14 +14,14 @@ const theme = extendTheme(overrides);
 function App() {
   return (
     <>
-      <ChakraProvider theme={theme}>
+      <ChakraProvider theme={ theme }>
         <Routes>
-          <Route path="/" element={<MainContainer />}>
-            <Route index element={<Home />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
-            <Route path="*" element={<NoRoute />} />
+          <Route path="/" element={ <MainContainer /> }>
+            <Route index element={ <Home /> } />
+            <Route path="/dashboard" element={ <Dashboard /> } />
+            <Route path="/login" element={ <Login /> } />
+            <Route path="/signup" element={ <Signup /> } />
+            <Route path="*" element={ <NoRoute /> } />
           </Route>
         </Routes>
       </ChakraProvider>
