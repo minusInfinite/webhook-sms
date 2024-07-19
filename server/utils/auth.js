@@ -1,6 +1,9 @@
+import {Buffer} from "node:buffer";
 import jwt from "jsonwebtoken";
 
 const secret = process.env.JWT_SECRET || "shhhhhhhhhhhhhhhh";
+const buffSecret = Buffer.from(secret, 'base64')
+
 const expiration = "2h";
 
 const authMiddleware = ({ req }) => {
@@ -15,7 +18,7 @@ const authMiddleware = ({ req }) => {
   }
 
   try {
-    const { data } = jwt.verify(token, secret, { maxAge: expiration });
+    const { data } = jwt.verify(token, buffSecret, { maxAge: expiration });
     req.user = data;
   } catch {
     console.error("Invalid token");
@@ -25,7 +28,7 @@ const authMiddleware = ({ req }) => {
 
 const signToken = ({ email, username, _id, isadmin }) => {
   const payload = { email, username, _id, isadmin };
-  return jwt.sign({ data: payload }, secret, { expiresIn: expiration });
+  return jwt.sign({ data: payload }, buffSecret, { expiresIn: expiration });
 };
 
 export { authMiddleware, signToken };

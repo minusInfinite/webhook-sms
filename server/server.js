@@ -13,6 +13,7 @@ import webhookRouter from "./controllers/hook.js";
 
 async function startServer(typeDefs, resolvers) {
   const app = express();
+  app.set('trust-proxy', 'loopback')
   const __filename = fileURLToPath(import.meta.url);
   const __dirname = dirname(__filename);
   const PORT = process.env.PORT || 3001;
@@ -31,7 +32,7 @@ async function startServer(typeDefs, resolvers) {
   app.use(express.urlencoded({ extended: true }));
   app.use(express.json());
   app.use(morgan("tiny"));
-  app.use(morgan(":graphql-log"));
+  app.use("/graphql", morgan(":graphql-log"));
   app.use("/hook", webhookRouter);
 
   gqlServer.applyMiddleware({ app });
