@@ -1,30 +1,29 @@
 {
-  "name": "server",
-  "packageManager": "yarn@3.1.0",
-  "type": "module",
-  "scripts": {
-    "start": "node server.js",
-    "dev": "nodemon server.js"
-  },
-  "private": true,
-  "dependencies": {
-    "apollo-server-core": "^3.13.0",
-    "apollo-server-errors": "^3.3.1",
-    "apollo-server-express": "^3.13.0",
-    "axios": "^0.26.1",
-    "bcrypt": "^5.1.1",
-    "dotenv": "^16.4.5",
-    "express": "^4.19.2",
-    "graphql": "16.8.1",
-    "jsonwebtoken": "^8.5.1",
-    "luxon": "^2.5.2",
-    "mongojs": "^3.1.0",
-    "mongoose": "^6.12.8",
-    "morgan": "^1.10.0",
-    "uuid": "^8.3.2"
-  },
-  "devDependencies": {
-    "@types/morgan": "^1.9.9",
-    "nodemon": "^3.1.0"
-  }
+    "name": "server",
+    "type": "module",
+    "scripts": {
+        "start": "node server.js",
+        "dev": "nodemon --exec node --trace-deprecation server.js"
+    },
+    "private": true,
+    "dependencies": {
+        "apollo-server-core": "^3.13.0",
+        "apollo-server-errors": "^3.3.1",
+        "apollo-server-express": "^3.13.0",
+        "axios": "^0.26.1",
+        "bcrypt": "^5.1.1",
+        "dotenv": "^16.5.0",
+        "express": "^4.21.2",
+        "graphql": "16.11.0",
+        "jsonwebtoken": "^8.5.1",
+        "luxon": "^2.5.2",
+        "mongojs": "^3.1.0",
+        "mongoose": "^6.13.8",
+        "morgan": "^1.10.0",
+        "uuid": "^8.3.2"
+    },
+    "devDependencies": {
+        "@types/morgan": "^1.9.10",
+        "nodemon": "^3.1.10"
+    }
 }

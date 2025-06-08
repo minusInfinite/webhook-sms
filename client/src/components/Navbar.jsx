@@ -11,6 +11,7 @@ import {
 
 export default function Navbar() {
   const bg = 'gray.800';
+  const buttonHover = { color: "gray.800", bg: "gray.100" }
 
   return (
     <>
@@ -42,15 +43,15 @@ export default function Navbar() {
             <HStack spacing={1} mr={1} color="blue.500" display={'inline-flex'}>
               {Auth.loggedIn() ? (
                 <>
-                  <Button as={RouterLink} to="/help" variant="ghost">
+                  <Button as={RouterLink} color="gray.100" _hover={buttonHover} to="/help" variant="ghost">
                     Help
                   </Button>
-                  <Button as={RouterLink} to="/dashboard" variant="ghost">
+                  <Button as={RouterLink} color="gray.100" _hover={buttonHover} to="/dashboard" variant="ghost">
                     Dashboard
                   </Button>
                 </>
               ) : (
-                <Button as={RouterLink} to="/login" variant="ghost">
+                <Button as={RouterLink} color="gray.100" _hover={buttonHover} to="/login" variant="ghost">
                   login
                 </Button>
               )}

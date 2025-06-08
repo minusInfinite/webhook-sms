@@ -1,27 +1,27 @@
 {
-  "name": "webhook-sms",
-  "packageManager": "yarn@4.1.1",
-  "private": true,
-  "workspaces": [
-    "server",
-    "client"
-  ],
-  "scripts": {
-    "server": "yarn workspace server",
-    "client": "yarn workspace client",
-    "server:start": "yarn server start",
-    "server:dev": "yarn server dev",
-    "client:start": "yarn client start",
-    "client:build": "yarn client build"
-  },
-  "dependencies": {
-    "client": "workspace:./client",
-    "server": "workspace:./server"
-  },
-  "devDependencies": {
-    "@types/eslint": "^8.56.9",
-    "eslint": "8.57.0",
-    "prettier": "^3.2.5",
-    "typescript": "^5.4.5"
-  }
+    "name": "webhook-sms",
+    "packageManager": "yarn@4.9.2",
+    "private": true,
+    "workspaces": [
+        "server",
+        "client"
+    ],
+    "scripts": {
+        "server": "yarn workspace server",
+        "client": "yarn workspace client",
+        "server:start": "yarn server start",
+        "server:dev": "yarn server dev",
+        "client:start": "yarn client start",
+        "client:build": "yarn client build"
+    },
+    "dependencies": {
+        "client": "workspace:./client",
+        "server": "workspace:./server"
+    },
+    "devDependencies": {
+        "@types/eslint": "^8.56.12",
+        "eslint": "^8.57.1",
+        "prettier": "^3.5.3",
+        "typescript": "^5.8.3"
+    }
 }

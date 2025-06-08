@@ -198,29 +198,29 @@ const Dashboard = () => {
     return (
       <>
         <Box
-          as={ 'section' }
-          flex={ { base: null, md: '3 0px' } }
-          order={ { base: null, md: '2' } }
+          as={'section'}
+          flex={{ base: null, md: '3 0px' }}
+          order={{ base: null, md: '2' }}
           justifyItems="center"
           alignSelf="flex-start"
           textAlign="center"
         >
-          <Flex direction={ 'column' }>
+          <Flex direction={'column'}>
             <Box mb="1rem" mt="1rem">
-              <Text as="span" sx={ { mx: '0.8rem' } }>
+              <Text as="span" sx={{ mx: '0.8rem' }}>
                 <strong>Username: </strong>
-                { userData.username }
+                {userData.username}
               </Text>
-              <Text as="span" sx={ { mx: '0.8rem' } }>
+              <Text as="span" sx={{ mx: '0.8rem' }}>
                 <strong>Service Lists: </strong>
-                { userData.serviceListCount }
+                {userData.serviceListCount}
               </Text>
             </Box>
-            { selectServiceList !== undefined ? (
+            {selectServiceList !== undefined ? (
               <ErrorBoundary>
                 <Box>
                   <Text>
-                    { uri }/hook/
+                    {uri}/hook/
                     {
                       userData.serviceList.find(
                         ({ _id }) => _id === selectServiceList
@@ -228,29 +228,29 @@ const Dashboard = () => {
                     }
                   </Text>
                   <Button
-                    my={ '1rem' }
-                    minH={ '2.5rem' }
-                    colorScheme={ 'gray' }
+                    my={'1rem'}
+                    minH={'2.5rem'}
+                    colorScheme={'gray'}
                     variant="solid"
-                    onClick={ () => addServiceOpen.onOpen() }
+                    onClick={() => addServiceOpen.onOpen()}
                   >
                     Add Service Number
                   </Button>
-                  <Collapse in={ addServiceOpen.isOpen }>
+                  <Collapse in={addServiceOpen.isOpen}>
                     <Container>
                       <chakra.form
-                        onSubmit={ e => {
+                        onSubmit={e => {
                           e.preventDefault();
                           addService();
-                        } }
-                        py={ 2 }
-                        px={ 4 }
-                        bg={ outerBoxGB }
+                        }}
+                        py={2}
+                        px={4}
+                        bg={outerBoxGB}
                         rounded="lg"
                       >
-                        <Text p={ 4 }>
-                          { ' ' }
-                          Add a service number, be sure to confirm the{ ' ' }
+                        <Text p={4}>
+                          {' '}
+                          Add a service number, be sure to confirm the{' '}
                           <Link
                             href="https://countrycode.org/"
                             targer="_blank"
@@ -264,30 +264,30 @@ const Dashboard = () => {
                             Enter Service Number
                           </FormLabel>
                           <Input
-                            onChange={ e => {
+                            onChange={e => {
                               setServiceNumberFormData({
                                 ...serviceNumberFormData,
                                 serviceNumber: e.target.value,
                               });
-                            } }
-                            value={ serviceNumberFormData.serviceNumber }
+                            }}
+                            value={serviceNumberFormData.serviceNumber}
                           />
                         </FormControl>
                         <ButtonGroup my="1rem">
                           <Button
                             type="submit"
-                            isLoading={ addServiceMut.loading }
+                            isLoading={addServiceMut.loading}
                           >
                             Add
                           </Button>
                           <Button
-                            onClick={ () => {
+                            onClick={() => {
                               setServiceNumberFormData({
                                 ...serviceNumberFormData,
                                 serviceNumber: '',
                               });
                               addServiceOpen.onClose();
-                            } }
+                            }}
                           >
                             Cancel
                           </Button>
@@ -296,22 +296,22 @@ const Dashboard = () => {
                     </Container>
                   </Collapse>
                   <Stack
-                    spacing={ 4 }
+                    spacing={4}
                     my="1rem"
-                    direction={ { base: 'column', md: 'row' } }
+                    direction={{ base: 'column', md: 'row' }}
                   >
-                    { currentServiceList.length === 0
+                    {currentServiceList.length === 0
                       ? null
                       : currentServiceList.map(service => {
                         console.log(service);
                         return (
                           <Box
                             pos="relative"
-                            id={ service.serviceNumber }
-                            key={ service._id }
-                            w={ { base: 'full', md: '25%' } }
+                            id={service.serviceNumber}
+                            key={service._id}
+                            w={{ base: 'full', md: '45%' }}
                             textAlign="initial"
-                            bg={ outerBoxGB }
+                            bg={outerBoxGB}
                             shadow="lg"
                             rounded="lg"
                           >
@@ -321,73 +321,73 @@ const Dashboard = () => {
                               top="8px"
                               right="8px"
                               size="sm"
-                              onClick={ () => {
+                              onClick={() => {
                                 handleDeleteService(
                                   selectServiceList,
                                   service.serviceNumber
                                 );
-                              } }
+                              }}
                             />
-                            <Box px={ 4 } py={ 2 }>
+                            <Box px={4} py={2}>
                               <chakra.h1
-                                color={ innerBoxGB }
+                                color={innerBoxGB}
                                 fontWeight="bold"
                                 fontSize="xl"
                                 textTransform="uppercase"
                               >
-                                { service.serviceNumber }
+                                {service.serviceNumber}
                               </chakra.h1>
                               <chakra.p
-                                mt={ 1 }
+                                mt={1}
                                 fontSize="sm"
-                                color={ cardColor }
+                                color={cardColor}
                               >
-                                <chakra.strong>Status: </chakra.strong>{ service.lastStatus }<br />
-                                <chakra.strong>last Message Sent: </chakra.strong>{ service.lastMessage }<br />
-                                <chakra.strong>Message Count: </chakra.strong>{ service.messageCount }
+                                <chakra.strong>Status: </chakra.strong>{service.lastStatus}<br />
+                                <chakra.strong>last Message Sent: </chakra.strong>{service.lastMessage}<br />
+                                <chakra.strong>Message Count: </chakra.strong>{service.messageCount}
                               </chakra.p>
                             </Box>
                           </Box>
                         );
-                      }) }
+                      })}
                   </Stack>
                 </Box>
               </ErrorBoundary>
-            ) : null }
+            ) : null}
           </Flex>
         </Box>
         <Box
           as="aside"
-          flex={ { base: '1 0 0' } }
-          order={ { base: null, md: '1' } }
-          h={ { base: '100%', md: '100%' } }
+          flex={{ base: '1 0 0' }}
+          order={{ base: null, md: '1' }}
+          h={{ base: '100%', md: '100%' }}
           display="flex"
           flexDirection="column"
           textAlign="left"
-          my={ 1 }
+          my={1}
           paddingX="0.5rem"
-          overflowY={ 'scroll' }
+          overflowY={'scroll'}
         >
           <Button
-            my={ '1rem' }
-            w={ 'full' }
-            minH={ '2.5rem' }
-            colorScheme={ 'gray' }
+            my={'1rem'}
+            w={'full'}
+            minH={'2.5rem'}
+            colorScheme={'gray'}
             variant="solid"
-            onClick={ dialogOpen.onOpen }
+            onClick={dialogOpen.onOpen}
           >
             New Service List
           </Button>
           <Box>
-            { userData?.serviceList.map(servicelist => {
+            {userData?.serviceList.map(servicelist => {
               return (
                 <Box
                   pos="relative"
-                  id={ servicelist.name }
-                  key={ servicelist._id }
+                  id={servicelist.name}
+                  key={servicelist._id}
                   mx="auto"
                   my="1rem"
-                  bg={ outerBoxGB }
+                  bg={outerBoxGB}
                   shadow="lg"
                   rounded="lg"
                 >
@@ -397,51 +397,51 @@ const Dashboard = () => {
                     top="8px"
                     right="8px"
                     size="sm"
-                    onClick={ () => {
+                    onClick={() => {
                       handleDeleteServiceList(servicelist._id);
-                    } }
+                    }}
                   />
-                  <Box px={ 4 } py={ 2 }>
+                  <Box px={4} py={2}>
                     <chakra.h1
-                      color={ innerBoxGB }
+                      color={innerBoxGB}
                       fontWeight="bold"
                       fontSize="2xl"
                       textTransform="uppercase"
-                      cursor={ 'pointer' }
-                      onClick={ () => setServiceList(servicelist._id) }
+                      cursor={'pointer'}
+                      onClick={() => setServiceList(servicelist._id)}
                     >
-                      { servicelist.name }
+                      {servicelist.name}
                     </chakra.h1>
-                    <chakra.p mt={ 1 } fontSize="sm" color={ cardColor }>
+                    <chakra.p mt={1} fontSize="sm" color={cardColor}>
                       <chakra.strong>Message Template:</chakra.strong>
-                      { servicelist.msgTemplate }
+                      {servicelist.msgTemplate}
                       <br />
                       <chakra.strong>Service Count:</chakra.strong>
-                      { servicelist.serviceCount }
+                      {servicelist.serviceCount}
                       <br />
                       <chakra.strong>Total Usage Cost:</chakra.strong>
-                      { servicelist.usageCost }
+                      {servicelist.usageCost}
                     </chakra.p>
                   </Box>
                 </Box>
               );
-            }) }
+            })}
           </Box>
         </Box>
         <DialogForm
-          diaglogHeader={ 'Add a Service List' }
-          initialFocusRef={ initialRef }
-          dialogIsOpen={ dialogOpen.isOpen }
-          dialogOnClose={ dialogOpen.onClose }
-          alertIsOpen={ alertOpen.isOpen }
-          alertOnClose={ alertOpen.onClose }
+          diaglogHeader={'Add a Service List'}
+          initialFocusRef={initialRef}
+          dialogIsOpen={dialogOpen.isOpen}
+          dialogOnClose={dialogOpen.onClose}
+          alertIsOpen={alertOpen.isOpen}
+          alertOnClose={alertOpen.onClose}
           formId="addServiceListForm"
-          fieldData={ serviceListFormData }
-          fields={ fields }
-          submitHandler={ addServiceList }
-          inputChangeHandler={ setServiceListFormData }
-          formState={ serviceListFormData }
-          buttonLoading={ isAddLoading }
+          fieldData={serviceListFormData}
+          fields={fields}
+          submitHandler={addServiceList}
+          inputChangeHandler={setServiceListFormData}
+          formState={serviceListFormData}
+          buttonLoading={isAddLoading}
         />
       </>
     );
